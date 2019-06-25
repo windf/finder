@@ -1,7 +1,10 @@
 package controllers
+
 import (
+	"finder/models"
 	"github.com/astaxie/beego"
 )
+
 //用户管理
 
 type UserController struct {
@@ -10,7 +13,8 @@ type UserController struct {
 
 func (this *UserController) Index() {
 	//todo 搜索
-	this.Ctx.WriteString("admin user front")
+	this.Ctx.WriteString("user index")
+	models.GetUserList()
 }
 
 func (this *UserController) Add() {
