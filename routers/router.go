@@ -6,9 +6,10 @@ import (
 )
 
 func init() {
-    beego.Router("/", &controllers.MainController{})
+	beego.Router("/", &controllers.MainController{})
 	beego.Router("/record", &controllers.RecordController{})
 	beego.Router("/user", &controllers.UserController{}, "*:Index")
+	beego.Router("/api/user", &controllers.UserController{}, "*:ApiUser")
 
 	//admin todo restful
 	beego.Router("/admin/user/add", &controllers.UserController{}, "POST:Add")
