@@ -1,6 +1,6 @@
 package model
 
-type Official struct {
+type Record struct {
 	ID          int64  `json:"id" gorm:"column:id"`
 	PublisherId int64  `json:"publisher_id" gorm:"column:publisher_id"`
 	Name        string `json:"name" gorm:"column:name"`

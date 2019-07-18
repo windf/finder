@@ -23,7 +23,7 @@ type Service struct {
 	dao    *dao.Dao
 	conf   *config.Config
 	echo   *echo.Echo
-	logger echo.Logger
+	Logger echo.Logger
 }
 
 func New(c *config.Config) (s *Service) {
@@ -36,8 +36,10 @@ func New(c *config.Config) (s *Service) {
 
 	s.conf = c
 	s.echo = echo.New()
-	s.logger = s.echo.Logger
+	s.Logger = s.echo.Logger
 
+	//controller
+	controllers.Init(s)
 	//log
 	s.initLog()
 	//http
@@ -46,8 +48,8 @@ func New(c *config.Config) (s *Service) {
 }
 
 func (s *Service) initLog() {
-	s.logger.SetPrefix(s.conf.Prefix)
-	s.logger.SetLevel(logLevels[s.conf.LogLevel])
+	s.Logger.SetPrefix(s.conf.Prefix)
+	s.Logger.SetLevel(logLevels[s.conf.LogLevel])
 }
 
 func (s *Service) startServer() {
@@ -63,8 +65,8 @@ func (s *Service) startServer() {
 		e.PUT("/users/:id", controllers.UpdateUser)
 		e.DELETE("/users/:id", controllers.DeleteUser)
 	*/
-	s.echo.GET("/person/:id", controllers.GetPersonDetail)
-	s.echo.GET("/people/*", controllers.GetPeopleList)
+	s.echo.GET("/record/:id", controllers.GetDetail)
+	s.echo.GET("/recordList/*", controllers.GetList)
 
 	s.echo.Logger.Fatal(s.echo.Start(s.conf.HttpAddress))
 }
