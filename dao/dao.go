@@ -73,3 +73,9 @@ func NewRedisPool(cfg *RedisCfg) *redis.Pool {
 		},
 	}
 }
+
+func (d *Dao) Close() {
+	d.cpool.Close()
+	d.dbr.Close()
+	d.dbw.Close()
+}

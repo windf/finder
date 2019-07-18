@@ -5,14 +5,14 @@ import (
 	"finder/service"
 	"flag"
 	"os"
+	"os/signal"
+	"syscall"
 )
 
 var (
 	flagSet = flag.NewFlagSet("finder", flag.ExitOnError)
 
-	filePath    = flagSet.String("config-path", "config.toml", "config file")
-	LogLevel    = flagSet.String("log-level", "DEBUG", "log level")
-	httpAddress = flagSet.String("http-address", "0.0.0.0:8080", "<addr>:<port> to listen on for http clients")
+	filePath = flagSet.String("config-path", "config.toml", "config file")
 )
 
 func main() {
@@ -22,7 +22,13 @@ func main() {
 		panic(err)
 	}
 
-	if err := service.Run(*httpAddress); err != nil {
-		panic(err)
+	svr := service.New(config.Conf)
+	c := make(chan os.Signal, 1)
+	signal.Notify(c, syscall.SIGHUP, syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT)
+
+	select {
+	case <-c:
+		svr.Close()
+		return
 	}
 }
