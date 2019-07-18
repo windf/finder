@@ -2,6 +2,7 @@ package main
 
 import (
 	"finder/config"
+	"finder/controllers"
 	"finder/service"
 	"flag"
 	"os"
@@ -23,6 +24,9 @@ func main() {
 	}
 
 	svr := service.New(config.Conf)
+	//controller
+	controllers.Init(svr)
+
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, syscall.SIGHUP, syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT)
 

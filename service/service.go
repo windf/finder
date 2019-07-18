@@ -38,8 +38,6 @@ func New(c *config.Config) (s *Service) {
 	s.echo = echo.New()
 	s.Logger = s.echo.Logger
 
-	//controller
-	controllers.Init(s)
 	//log
 	s.initLog()
 	//http
