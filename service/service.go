@@ -46,6 +46,7 @@ func New(c *config.Config) (s *Service) {
 }
 
 func (s *Service) initLog() {
+	s.logger.SetPrefix(s.conf.Prefix)
 	s.logger.SetLevel(logLevels[s.conf.LogLevel])
 }
 

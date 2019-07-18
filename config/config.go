@@ -11,6 +11,7 @@ type Config struct {
 	Cache       *Cache
 	LogLevel    string
 	HttpAddress string
+	Prefix      string
 }
 
 type Database struct {
@@ -29,7 +30,6 @@ type Databases struct {
 
 type Cache struct {
 	Expire int
-	Limit  int
 }
 
 var (

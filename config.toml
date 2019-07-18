@@ -1,6 +1,7 @@
 env = "dev"
 logLevel = "DEBUG"
 httpAddress = "0.0.0.0:8080"
+prefix = "finder"
 
 [database]
     [database.read]
@@ -12,4 +13,3 @@ httpAddress = "0.0.0.0:8080"
     psw  = ""
 [cache]
     expire = 86400
-    limit = 1000
