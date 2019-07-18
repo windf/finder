@@ -12,7 +12,7 @@ var (
 
 	filePath    = flagSet.String("config-path", "config.toml", "config file")
 	LogLevel    = flagSet.String("log-level", "DEBUG", "log level")
-	httpAddress = flag.String("http-address", "0.0.0.0:8080", "<addr>:<port> to listen on for http clients")
+	httpAddress = flagSet.String("http-address", "0.0.0.0:8080", "<addr>:<port> to listen on for http clients")
 )
 
 func main() {

@@ -2,6 +2,7 @@ package dao
 
 import (
 	"finder/config"
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/gomodule/redigo/redis"
 	"github.com/jinzhu/gorm"
 	"github.com/json-iterator/go"
