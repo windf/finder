@@ -2,19 +2,17 @@ package main
 
 import (
 	"finder/config"
-	"finder/controllers"
-	"finder/dao"
+	"finder/service"
 	"flag"
-	"github.com/labstack/echo"
-	"github.com/labstack/echo/middleware"
 	"os"
 )
 
 var (
 	flagSet = flag.NewFlagSet("finder", flag.ExitOnError)
 
-	filePath = flagSet.String("config-path", "config.toml", "config file")
-	logLevel = flagSet.String("log-level", "DEBUG", "log level")
+	filePath    = flagSet.String("config-path", "config.toml", "config file")
+	LogLevel    = flagSet.String("log-level", "DEBUG", "log level")
+	httpAddress = flag.String("http-address", "0.0.0.0:8080", "<addr>:<port> to listen on for http clients")
 )
 
 func main() {
@@ -24,37 +22,7 @@ func main() {
 		panic(err)
 	}
 
-	if err := Run(); err != nil {
+	if err := service.Run(*httpAddress); err != nil {
 		panic(err)
 	}
-
-	startServer()
-}
-
-func Run() (err error) {
-	r := new(config.Finder)
-	if r.Dao, err = dao.NewDao(config.Conf); err != nil {
-		panic(err)
-	}
-	return
-}
-
-func startServer() {
-	e := echo.New()
-
-	//Middleware
-	e.Use(middleware.Recover())
-	e.Use(middleware.Logger())
-
-	// Routes
-	/*
-		e.POST("/users", controllers.CreateUser)
-		e.GET("/users/:id", controllers.GetUser)
-		e.PUT("/users/:id", controllers.UpdateUser)
-		e.DELETE("/users/:id", controllers.DeleteUser)
-	*/
-	e.GET("/person/:id", controllers.GetPersonDetail)
-	e.GET("/people/*", controllers.GetPeopleList)
-
-	e.Logger.Fatal(e.Start(":1323"))
 }
