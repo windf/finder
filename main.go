@@ -1,16 +1,29 @@
 package main
 
 import (
-	"finder/models"
-	_ "finder/routers"
-	"github.com/astaxie/beego"
+	"github.com/labstack/echo"
+	"github.com/labstack/echo/middleware"
+	"testecho/controllers"
 )
 
-func init() {
-	models.MysqlConnect()
-	//todo redis
-}
+func main()  {
+	e := echo.New()
 
-func main() {
-	beego.Run()
+	//Middleware
+	e.Use(middleware.Recover())
+	e.Use(middleware.Logger())
+
+
+	// Routes
+	/*
+	e.POST("/users", controllers.CreateUser)
+	e.GET("/users/:id", controllers.GetUser)
+	e.PUT("/users/:id", controllers.UpdateUser)
+	e.DELETE("/users/:id", controllers.DeleteUser)
+	*/
+	e.GET("/person/:id", controllers.GetPersonDetail)
+	e.GET("/people/*", controllers.GetPeopleList)
+
+
+	e.Logger.Fatal(e.Start(":1323"))
 }
