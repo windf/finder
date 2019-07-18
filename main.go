@@ -25,7 +25,7 @@ func main() {
 
 	svr := service.New(config.Conf)
 	//controller
-	controllers.Init(svr)
+	controllers.Init(config.Conf, svr)
 
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, syscall.SIGHUP, syscall.SIGQUIT, syscall.SIGTERM, syscall.SIGINT)
