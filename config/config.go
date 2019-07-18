@@ -1,7 +1,6 @@
 package config
 
 import (
-	"finder/dao"
 	"github.com/BurntSushi/toml"
 )
 
@@ -30,10 +29,6 @@ type Databases struct {
 type Cache struct {
 	Expire int
 	Limit  int
-}
-
-type Finder struct {
-	Dao *dao.Dao
 }
 
 var (
