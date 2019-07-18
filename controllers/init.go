@@ -25,5 +25,5 @@ func Init(c *config.Config, s *service.Service) {
 	s.Echo.GET("/record/:id", GetDetail)
 	s.Echo.GET("/recordList/*", GetList)
 
-	s.Echo.Logger.Fatal(s.echo.Start(c.HttpAddress))
+	s.Echo.Logger.Fatal(s.Echo.Start(c.HttpAddress))
 }
