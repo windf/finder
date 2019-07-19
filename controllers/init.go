@@ -22,7 +22,9 @@ func Init(c *config.Config, s *service.Service) {
 	//Middleware
 	s.Echo.Use(middleware.Recover())
 	s.Echo.Use(middleware.Logger())
+	s.Echo.Use(middleware.RequestID())
 
+	//error handler
 	s.Echo.HTTPErrorHandler = customHTTPErrorHandler
 
 	// Routes
@@ -32,8 +34,8 @@ func Init(c *config.Config, s *service.Service) {
 		e.PUT("/users/:id", controllers.UpdateUser)
 		e.DELETE("/users/:id", controllers.DeleteUser)
 	*/
-	s.Echo.GET("/record/:id", GetDetail)
-	s.Echo.GET("/recordList/*", GetList)
+	s.Echo.GET("/record/:id", GetRecordDetail)
+	s.Echo.GET("/recordList/", GetRecordList)
 
 	s.Echo.Logger.Fatal(s.Echo.Start(c.HttpAddress))
 }
