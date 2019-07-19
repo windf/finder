@@ -19,5 +19,6 @@ func GetDetail(c echo.Context) error {
 	if result == nil {
 		result = new(model.Record)
 	}
-	return c.JSON(http.StatusOK, result)
+
+	return JSON(c, http.StatusOK, "success", result)
 }
