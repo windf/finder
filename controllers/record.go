@@ -3,23 +3,26 @@ package controllers
 import (
 	"github.com/labstack/echo"
 	"net/http"
+	"strconv"
 )
 
 func GetList(c echo.Context) error {
+
 	return c.JSON(http.StatusOK, nil)
 }
 
 func GetDetail(c echo.Context) (err error) {
-	req := new(GetDetailReq)
-	if err = c.Bind(req); err != nil {
-		return
+	id := c.Param("id")
+	recordId, err := strconv.ParseInt(id, 10, 64)
+	if err != nil {
+		return JsonBadRequest(c, "参数错误")
 	}
 
-	if req.ID <= 0 {
-		return JsonFail(c, http.StatusOK, "id不正确")
+	if recordId <= 0 {
+		return JsonBadRequest(c, "id不正确")
 	}
 
-	result, err := findSrv.GetRecord(1)
+	result, err := findSrv.GetRecord(recordId)
 	if err != nil {
 		findSrv.Logger.Errorf("get record err:%s", err.Error())
 	}
@@ -31,5 +34,5 @@ func GetDetail(c echo.Context) (err error) {
 		res = result
 	}
 
-	return JsonSuccess(c, http.StatusOK, res)
+	return JsonOk(c, res)
 }
