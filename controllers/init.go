@@ -35,6 +35,7 @@ func Init(c *config.Config, s *service.Service) {
 		e.DELETE("/users/:id", controllers.DeleteUser)
 	*/
 
+	s.Echo.GET("/comment/:id/", GetCommentList)
 	s.Echo.GET("/search/", SearchRecordDetail)
 	s.Echo.GET("/record/:id", GetRecordDetail)
 	s.Echo.GET("/recordList/", GetRecordList)
