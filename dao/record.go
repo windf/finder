@@ -22,7 +22,7 @@ func (d *Dao) GetRecordById(id int64) (result *model.Record, err error) {
 
 func (d *Dao) GetRecordList(page, pageSize int) (result []*model.Record, err error) {
 	offset := (page - 1) * pageSize
-	err = d.dbr.Table(_table).Offset(offset).Limit(pageSize).Select("*").Find(result).Error
+	err = d.dbr.Table(_table).Offset(offset).Limit(pageSize).Select("*").Find(&result).Error
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
 			result = nil

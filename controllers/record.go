@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"github.com/labstack/echo"
-	"net/http"
 	"strconv"
 )
 
@@ -40,7 +39,7 @@ func GetRecordList(c echo.Context) error {
 		res = result
 	}
 
-	return c.JSON(http.StatusOK, res)
+	return JsonOk(c, res)
 }
 
 func GetRecordDetail(c echo.Context) (err error) {
