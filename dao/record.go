@@ -32,3 +32,15 @@ func (d *Dao) GetRecordList(page, pageSize int) (result []*model.Record, err err
 	}
 	return
 }
+
+func (d *Dao) GetRecordByName(name string) (result []*model.Record, err error) {
+	err = d.dbr.Table(_table).Where("name=?", name).Select("*").Find(&result).Error
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			result = nil
+			err = nil
+		}
+		return
+	}
+	return
+}

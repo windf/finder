@@ -34,6 +34,8 @@ func Init(c *config.Config, s *service.Service) {
 		e.PUT("/users/:id", controllers.UpdateUser)
 		e.DELETE("/users/:id", controllers.DeleteUser)
 	*/
+
+	s.Echo.GET("/search/", SearchRecordDetail)
 	s.Echo.GET("/record/:id", GetRecordDetail)
 	s.Echo.GET("/recordList/", GetRecordList)
 

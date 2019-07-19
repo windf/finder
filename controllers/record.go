@@ -1,6 +1,8 @@
 package controllers
 
 import (
+	"finder/model"
+	"finder/util"
 	"github.com/labstack/echo"
 	"strconv"
 )
@@ -63,6 +65,44 @@ func GetRecordDetail(c echo.Context) (err error) {
 
 	if result != nil {
 		res = result
+	}
+
+	return JsonOk(c, res)
+}
+
+func SearchRecordDetail(c echo.Context) (err error) {
+	keyword := c.QueryParam("keyword")
+
+	id, ok := util.IsNumeric(keyword)
+
+	var res interface{}
+	res = struct{}{}
+
+	if ok {
+		if id <= 0 {
+			return JsonBadRequest(c, "id不正确")
+		}
+		result, err := findSrv.GetRecord(id)
+		if err != nil {
+			findSrv.Logger.Errorf("get record err:%s", err.Error())
+		}
+
+		if result != nil {
+			res = []*model.Record{result}
+		}
+	} else {
+		if keyword == "" {
+			return JsonBadRequest(c, "参数错误")
+		}
+
+		result, err := findSrv.GetRecordByName(keyword)
+		if err != nil {
+			findSrv.Logger.Errorf("GetRecordByName err:%s", err.Error())
+		}
+
+		if result != nil {
+			res = result
+		}
 	}
 
 	return JsonOk(c, res)
