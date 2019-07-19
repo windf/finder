@@ -23,6 +23,8 @@ func Init(c *config.Config, s *service.Service) {
 	s.Echo.Use(middleware.Recover())
 	s.Echo.Use(middleware.Logger())
 
+	s.Echo.HTTPErrorHandler = customHTTPErrorHandler
+
 	// Routes
 	/*
 		e.POST("/users", controllers.CreateUser)
@@ -51,4 +53,24 @@ func JsonBadRequest(c echo.Context, msg string) error {
 		Errcode: code,
 		Errmsg:  msg,
 	})
+}
+
+func JsonError(c echo.Context, code int, msg string) error {
+	return c.JSON(code, &Message{
+		Errcode: code,
+		Errmsg:  msg,
+	})
+}
+
+func customHTTPErrorHandler(err error, c echo.Context) {
+	httpError, ok := err.(*echo.HTTPError)
+	if ok {
+		errorCode := httpError.Code
+		switch errorCode {
+		case http.StatusNotFound:
+			JsonError(c, http.StatusNotFound, "Not Found")
+		default:
+			JsonError(c, http.StatusInternalServerError, "内部错误")
+		}
+	}
 }
