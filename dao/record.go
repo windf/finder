@@ -7,7 +7,7 @@ const (
 	_table = "record"
 )
 
-func (d *Dao) FindOneById(id int64) (result *model.Record, err error) {
+func (d *Dao) GetRecordById(id int64) (result *model.Record, err error) {
 	result = new(model.Record)
 	err = d.dbr.Table(_table).Where("id=?", id).Select("*").Take(result).Error
 	if err != nil {
