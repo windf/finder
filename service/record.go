@@ -4,8 +4,7 @@ import "finder/model"
 
 func (s *Service) GetRecord(id int64) (result *model.Record, err error) {
 	result, err = s.dao.GetRecordCache(id)
-	if err != nil {
-		s.Logger.Errorf("GetRecordCache err:%s ", err.Error())
+	if err == nil {
 		return
 	}
 
