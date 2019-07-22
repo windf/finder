@@ -1,15 +1,32 @@
 package controllers
 
-import "github.com/astaxie/beego"
+import "github.com/labstack/echo"
 
-type LoginController struct {
-	beego.Controller
+func Login(c echo.Context) error {
+	userName := c.FormValue("user_name")
+	password := c.FormValue("password")
+
+	if userName == "" || password == "" {
+		return JsonBadRequest(c, "参数错误")
+	}
+
+	result, err := findSrv.Login(userName, password)
+	if err != nil || result == nil {
+		return JsonBadRequest(c, "用户不存在或密码错误")
+	}
+
+	err = SetSessionId(c, result.ID)
+	if err != nil {
+		return JsonBadRequest(c, "登录失败，请稍后重试")
+	}
+	return RenderAdmin(c)
 }
 
-func (this *LoginController) Index() {
-	this.Ctx.WriteString("admin user front")
-}
+func Logout(c echo.Context) error {
+	err := DelSessionId(c)
+	if err != nil {
+		return JsonBadRequest(c, "退出失败，请稍后重试")
+	}
 
-func (this *LoginController) Logout() {
-	this.Ctx.WriteString("admin user front")
+	return RenderLogin(c)
 }
