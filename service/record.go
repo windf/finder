@@ -37,3 +37,24 @@ func (s *Service) GetRecordList(page, pageSize int) (result []*model.Record, err
 	}
 	return
 }
+
+func (s *Service) AddRecord(record *model.Record) bool {
+	if s.dao.AddRecord(record) {
+		return true
+	}
+	return false
+}
+
+func (s *Service) UpdateRecord(userId int64, record *model.Record) bool {
+	if s.dao.UpdateRecord(userId, record) {
+		return true
+	}
+	return false
+}
+
+func (s *Service) DeleteRecord(record *model.Record) bool {
+	if s.dao.DeleteRecord(record) {
+		return true
+	}
+	return false
+}

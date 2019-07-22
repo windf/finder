@@ -41,18 +41,25 @@ func Init(c *config.Config, s *service.Service) {
 
 	s.Echo.POST("/login", Login)
 	s.Echo.POST("/logout", Logout)
+	s.Echo.POST("/register", Register)
 	s.Echo.GET("/comment/:id/", GetCommentList)
 	s.Echo.GET("/search", SearchRecordDetail)
 	s.Echo.GET("/record/:id", GetRecordDetail)
 	s.Echo.GET("/recordList", GetRecordList)
 
 	admin := s.Echo.Group("/admin", MiddlewareAuthAdmin)
+	//user
 	admin.GET("/admin/userList", GetUserList)
 	admin.POST("/admin/user", AddUser)
 	admin.GET("/admin/user/:id", GetUser)
 	admin.PUT("/admin/user/:id", UpdateUser)
 	admin.DELETE("/admin/user/:id", DeleteUser)
-	admin.PUT("/admin/user_password/:id", UpdatePassword)
+	admin.PUT("/admin/user/:id/password", UpdatePassword)
+	//record
+	admin.POST("/admin/record", AddRecord)
+	admin.PUT("/admin/record/:id", UpdateRecord)
+	admin.DELETE("/admin/record/:id", DeleteRecord)
+	admin.PUT("/admin/record/:id/review", ReviewRecord)
 
 	s.Echo.Logger.Fatal(s.Echo.Start(c.HttpAddress))
 }

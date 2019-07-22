@@ -66,8 +66,8 @@ func (d *Dao) AddUser(user *model.User) bool {
 	return true
 }
 
-func (d *Dao) UpdateUser(user *model.User) bool {
-	err := d.dbw.Table(_userTable).Updates(user).Error
+func (d *Dao) UpdateUser(userId int64, user *model.User) bool {
+	err := d.dbw.Table(_userTable).Where("id=?", userId).Updates(user).Error
 	if err != nil {
 		return false
 	}

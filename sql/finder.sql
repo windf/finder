@@ -49,6 +49,7 @@ CREATE TABLE `record` (
   `remark` text COMMENT '备注',
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '审核状态 0 未审核 1 审核通过 2 审核未通过',
   `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '发布时间',
+  `update_time` int(11) NOT NULL DEFAULT '0' COMMENT '修改时间',
   PRIMARY KEY (`id`),
   KEY `publisher_id` (`publisher_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='发布记录表';

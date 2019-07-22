@@ -5,6 +5,7 @@ import (
 	"finder/util"
 	"github.com/labstack/echo"
 	"strconv"
+	"time"
 )
 
 func GetRecordList(c echo.Context) error {
@@ -106,4 +107,201 @@ func SearchRecordDetail(c echo.Context) (err error) {
 	}
 
 	return JsonOk(c, res)
+}
+
+func AddRecord(c echo.Context) (err error) {
+	role := GetUserRole(c)
+	if role == model.UserError {
+		return JsonBadRequest(c, "权限不足")
+	}
+
+	//todo  上传图片
+	name := c.FormValue("name")
+	sex := c.FormValue("sex")
+	photo := c.FormValue("photo")
+	address := c.FormValue("address")
+	date := c.FormValue("date")
+	remark := c.FormValue("remark")
+
+	if name == "" {
+		return JsonBadRequest(c, "请输入姓名")
+	}
+
+	if sex == "" {
+		return JsonBadRequest(c, "请输入性别")
+	}
+
+	if address == "" {
+		return JsonBadRequest(c, "请输入地址")
+	}
+
+	if date == "" {
+		return JsonBadRequest(c, "请输入日期")
+	}
+
+	tmpSex, _ := strconv.Atoi(sex)
+
+	record := &model.Record{
+		PublisherId: GetSessionId(c),
+		Name:        name,
+		Sex:         tmpSex,
+		Photo:       photo,
+		Address:     address,
+		Date:        date,
+		Remark:      remark,
+		CreateTime:  time.Now().Unix(),
+		UpdateTime:  time.Now().Unix(),
+	}
+
+	if !findSrv.AddRecord(record) {
+		return JsonBadRequest(c, "添加信息失败，请稍后重试")
+	}
+
+	return JsonOk(c, struct{}{})
+}
+
+func UpdateRecord(c echo.Context) (err error) {
+	id := c.Param("id")
+	recordId, err := strconv.ParseInt(id, 10, 64)
+	if err != nil {
+		return JsonBadRequest(c, "参数错误")
+	}
+
+	if recordId <= 0 {
+		return JsonBadRequest(c, "id不正确")
+	}
+
+	role := GetUserRole(c)
+	if role == model.UserError {
+		return JsonBadRequest(c, "权限不足")
+	}
+
+	result, err := findSrv.GetRecord(recordId)
+	if err != nil {
+		findSrv.Logger.Errorf("get record err:%s", err.Error())
+	}
+
+	if result == nil {
+		return JsonBadRequest(c, "id不正确")
+	}
+
+	if role == model.USER {
+		if result.PublisherId != GetSessionId(c) {
+			return JsonBadRequest(c, "权限不足")
+		}
+	}
+
+	name := c.FormValue("name")
+	sex := c.FormValue("sex")
+	photo := c.FormValue("photo")
+	address := c.FormValue("address")
+	date := c.FormValue("date")
+	remark := c.FormValue("remark")
+
+	if name == "" {
+		return JsonBadRequest(c, "请输入姓名")
+	}
+
+	if sex == "" {
+		return JsonBadRequest(c, "请输入性别")
+	}
+
+	if address == "" {
+		return JsonBadRequest(c, "请输入地址")
+	}
+
+	if date == "" {
+		return JsonBadRequest(c, "请输入日期")
+	}
+
+	tmpSex, _ := strconv.Atoi(sex)
+
+	record := &model.Record{
+		Name:       name,
+		Sex:        tmpSex,
+		Photo:      photo,
+		Address:    address,
+		Date:       date,
+		Remark:     remark,
+		UpdateTime: time.Now().Unix(),
+	}
+
+	if !findSrv.UpdateRecord(recordId, record) {
+		return JsonBadRequest(c, "修改信息失败，请稍后重试")
+	}
+
+	return JsonOk(c, struct{}{})
+}
+
+func ReviewRecord(c echo.Context) (err error) {
+	id := c.Param("id")
+	recordId, err := strconv.ParseInt(id, 10, 64)
+	if err != nil {
+		return JsonBadRequest(c, "参数错误")
+	}
+
+	if recordId <= 0 {
+		return JsonBadRequest(c, "id不正确")
+	}
+
+	role := GetUserRole(c)
+	if role <= model.USER {
+		return JsonBadRequest(c, "权限不足")
+	}
+
+	status := c.FormValue("status")
+	if status == "" {
+		return JsonBadRequest(c, "请选择审核状态")
+	}
+
+	tmpStatus, _ := strconv.Atoi(status)
+
+	record := &model.Record{
+		Status:     tmpStatus,
+		UpdateTime: time.Now().Unix(),
+	}
+
+	if !findSrv.UpdateRecord(recordId, record) {
+		return JsonBadRequest(c, "审核信息失败，请稍后重试")
+	}
+
+	return JsonOk(c, struct{}{})
+}
+
+func DeleteRecord(c echo.Context) (err error) {
+	id := c.Param("id")
+	recordId, err := strconv.ParseInt(id, 10, 64)
+	if err != nil {
+		return JsonBadRequest(c, "参数错误")
+	}
+
+	if recordId <= 0 {
+		return JsonBadRequest(c, "id不正确")
+	}
+
+	role := GetUserRole(c)
+	if role == model.UserError {
+		return JsonBadRequest(c, "权限不足")
+	}
+
+	result, err := findSrv.GetRecord(recordId)
+	if err != nil {
+		findSrv.Logger.Errorf("get record err:%s", err.Error())
+	}
+
+	if result == nil {
+		return JsonBadRequest(c, "id不正确")
+	}
+
+	if role == model.USER {
+		if result.PublisherId != GetSessionId(c) {
+			return JsonBadRequest(c, "权限不足")
+		}
+	}
+
+	if !findSrv.DeleteRecord(&model.Record{ID: recordId}) {
+		return JsonBadRequest(c, "删除信息失败，请稍后重试")
+	}
+
+	return JsonOk(c, struct{}{})
 }

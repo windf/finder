@@ -45,8 +45,8 @@ func (s *Service) AddUser(user *model.User) bool {
 	return false
 }
 
-func (s *Service) UpdateUser(user *model.User) bool {
-	if s.dao.UpdateUser(user) {
+func (s *Service) UpdateUser(userId int64, user *model.User) bool {
+	if s.dao.UpdateUser(userId, user) {
 		return true
 	}
 	return false

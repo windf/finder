@@ -166,7 +166,7 @@ func UpdateUser(c echo.Context) error {
 		UpdateTime: time.Now().Unix(),
 	}
 
-	if !findSrv.UpdateUser(user) {
+	if !findSrv.UpdateUser(userId, user) {
 		return JsonBadRequest(c, "修改用户失败，请稍后重试")
 	}
 	return JsonOk(c, struct{}{})
@@ -217,7 +217,7 @@ func UpdatePassword(c echo.Context) error {
 		UpdateTime: time.Now().Unix(),
 	}
 
-	if !findSrv.UpdateUser(user) {
+	if !findSrv.UpdateUser(userId, user) {
 		return JsonBadRequest(c, "修改密码失败，请稍后重试")
 	}
 

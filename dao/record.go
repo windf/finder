@@ -1,7 +1,9 @@
 package dao
 
-import "github.com/jinzhu/gorm"
-import "finder/model"
+import (
+	"finder/model"
+	"github.com/jinzhu/gorm"
+)
 
 const (
 	_recordTable = "record"
@@ -43,4 +45,28 @@ func (d *Dao) GetRecordByName(name string) (result []*model.Record, err error) {
 		return
 	}
 	return
+}
+
+func (d *Dao) AddRecord(record *model.Record) bool {
+	err := d.dbw.Table(_recordTable).Create(record).Error
+	if err != nil {
+		return false
+	}
+	return true
+}
+
+func (d *Dao) UpdateRecord(recordId int64, record *model.Record) bool {
+	err := d.dbw.Table(_recordTable).Where("id=?", recordId).Updates(record).Error
+	if err != nil {
+		return false
+	}
+	return true
+}
+
+func (d *Dao) DeleteRecord(record *model.Record) bool {
+	err := d.dbw.Table(_recordTable).Delete(record).Error
+	if err != nil {
+		return false
+	}
+	return true
 }
