@@ -28,8 +28,7 @@ func (s *Service) GetRecordByName(name string) (result []*model.Record, err erro
 }
 
 func (s *Service) GetRecordList(page, pageSize int) (result []*model.Record, err error) {
-	//todo get cache
-
+	//todo 加查询状态 isfind status
 	result, err = s.dao.GetRecordList(page, pageSize)
 	if err != nil {
 		s.Logger.Errorf("GetRecordList err:%s ", err.Error())

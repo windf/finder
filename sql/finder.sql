@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50718
 File Encoding         : 65001
 
-Date: 2019-06-25 17:03:33
+Date: 2019-07-22 16:53:33
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -47,11 +47,13 @@ CREATE TABLE `record` (
   `address` varchar(255) NOT NULL DEFAULT '' COMMENT '失踪地点',
   `date` varchar(32) NOT NULL DEFAULT '' COMMENT '失踪日期',
   `remark` text COMMENT '备注',
-  `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '审核状态 0 未审核 1 审核通过 2 审核未通过',
+  `isfind` tinyint(1) NOT NULL DEFAULT '1' COMMENT '是否被找到 1 未找到 2 已找到',
+  `status` tinyint(1) NOT NULL DEFAULT '1' COMMENT '审核状态 1 未审核 2 审核未通过 3 审核通过 ',
   `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '发布时间',
   `update_time` int(11) NOT NULL DEFAULT '0' COMMENT '修改时间',
   PRIMARY KEY (`id`),
-  KEY `publisher_id` (`publisher_id`)
+  KEY `publisher_id` (`publisher_id`),
+  KEY `isfind_status` (`isfind`,`status`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='发布记录表';
 
 -- ----------------------------
@@ -71,7 +73,7 @@ CREATE TABLE `user` (
   `email` varchar(32) NOT NULL DEFAULT '' COMMENT '电子邮件',
   `remark` varchar(200) DEFAULT NULL COMMENT '备注',
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '用户状态 0 正常 1 非正常',
-  `role` tinyint(1) NOT NULL DEFAULT '0' COMMENT '用户角色 1 普通用户 2 志愿者 3 管理员',
+  `role` tinyint(1) NOT NULL DEFAULT '1' COMMENT '用户角色 1 普通用户 2 志愿者 3 管理员',
   `update_time` int(11) NOT NULL DEFAULT '0' COMMENT '修改时间',
   `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
   PRIMARY KEY (`id`),
