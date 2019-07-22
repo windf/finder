@@ -70,7 +70,7 @@ CREATE TABLE `user` (
   `email` varchar(32) NOT NULL DEFAULT '' COMMENT '电子邮件',
   `remark` varchar(200) DEFAULT NULL COMMENT '备注',
   `status` tinyint(1) NOT NULL DEFAULT '0' COMMENT '用户状态 0 正常 1 非正常',
-  `role` tinyint(1) NOT NULL DEFAULT '0' COMMENT '用户角色 0 普通用户 1 志愿者 2 管理员',
+  `role` tinyint(1) NOT NULL DEFAULT '0' COMMENT '用户角色 1 普通用户 2 志愿者 3 管理员',
   `update_time` int(11) NOT NULL DEFAULT '0' COMMENT '修改时间',
   `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
   PRIMARY KEY (`id`),

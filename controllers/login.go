@@ -1,6 +1,9 @@
 package controllers
 
-import "github.com/labstack/echo"
+import (
+	"finder/model"
+	"github.com/labstack/echo"
+)
 
 func Login(c echo.Context) error {
 	userName := c.FormValue("user_name")
@@ -13,6 +16,10 @@ func Login(c echo.Context) error {
 	result, err := findSrv.Login(userName, password)
 	if err != nil || result == nil {
 		return JsonBadRequest(c, "用户不存在或密码错误")
+	}
+
+	if result.Status == model.StatusERR {
+		return JsonBadRequest(c, "该用户已被封禁，请尝试联系管理员")
 	}
 
 	err = SetSessionId(c, result.ID)

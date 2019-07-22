@@ -2,11 +2,11 @@ package service
 
 import (
 	"finder/model"
-	"iceberg/frame/util"
+	"finder/util"
 )
 
 func (s *Service) Login(userName, password string) (result *model.User, err error) {
-	password = util.MD5([]byte(password))
+	password = util.Md5(password)
 	result, err = s.dao.GetUserInfoByNameAndPassword(userName, password)
 	if err != nil {
 		s.Logger.Errorf("GetUserInfoByNameAndPassword err:%s ", err.Error())

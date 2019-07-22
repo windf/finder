@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"finder/config"
+	"finder/model"
 	"finder/service"
 	"github.com/gorilla/sessions"
 	"github.com/labstack/echo"
@@ -47,6 +48,11 @@ func Init(c *config.Config, s *service.Service) {
 
 	admin := s.Echo.Group("/admin", MiddlewareAuthAdmin)
 	admin.GET("/admin/userList", GetUserList)
+	admin.POST("/admin/user", AddUser)
+	admin.GET("/admin/user/:id", GetUser)
+	admin.PUT("/admin/user/:id", UpdateUser)
+	admin.DELETE("/admin/user/:id", DeleteUser)
+	admin.PUT("/admin/user_password/:id", UpdatePassword)
 
 	s.Echo.Logger.Fatal(s.Echo.Start(c.HttpAddress))
 }
@@ -98,6 +104,24 @@ func DelSessionId(c echo.Context) (err error) {
 	sess.Options.MaxAge = -1
 
 	return sess.Save(c.Request(), c.Response())
+}
+
+func GetUserRole(c echo.Context) (role int) {
+	sess, err := session.Get("session", c)
+	if err != nil {
+		return
+	}
+
+	result, err := findSrv.GetUser(sess.Values["id"].(int64))
+	if err != nil || result == nil {
+		role = model.UserError
+	}
+
+	if result.Status == model.StatusERR {
+		role = model.UserError
+	}
+
+	return
 }
 
 func RenderLogin(c echo.Context) error {

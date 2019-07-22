@@ -57,3 +57,27 @@ func (d *Dao) GetUserInfoByNameAndPassword(userName, password string) (result *m
 	}
 	return
 }
+
+func (d *Dao) AddUser(user *model.User) bool {
+	err := d.dbw.Table(_userTable).Create(user).Error
+	if err != nil {
+		return false
+	}
+	return true
+}
+
+func (d *Dao) UpdateUser(user *model.User) bool {
+	err := d.dbw.Table(_userTable).Updates(user).Error
+	if err != nil {
+		return false
+	}
+	return true
+}
+
+func (d *Dao) DeleteUser(user *model.User) bool {
+	err := d.dbw.Table(_userTable).Delete(user).Error
+	if err != nil {
+		return false
+	}
+	return true
+}
