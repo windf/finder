@@ -155,11 +155,11 @@ func GetUserRole(c echo.Context) (role int) {
 
 //重定向
 func RedirectLogin(c echo.Context) error {
-	return c.Redirect(http.StatusFound, "login")
+	return c.Redirect(http.StatusFound, "/login")
 }
 
 func RedirectAdmin(c echo.Context) error {
-	return c.Redirect(http.StatusFound, "admin")
+	return c.Redirect(http.StatusFound, "/admin")
 }
 
 //模板渲染
