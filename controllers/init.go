@@ -59,6 +59,8 @@ func Init(c *config.Config, s *service.Service) {
 	s.Echo.GET("/recordList", GetRecordList)
 
 	admin := s.Echo.Group("/admin", MiddlewareAuthAdmin)
+	//index
+	admin.GET("/admin", RenderAdmin)
 	//user
 	admin.GET("/admin/userList", GetUserList)
 	admin.POST("/admin/user", AddUser)
