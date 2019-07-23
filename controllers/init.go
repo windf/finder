@@ -60,9 +60,9 @@ func Init(c *config.Config, s *service.Service) {
 
 	admin := s.Echo.Group("/admin", MiddlewareAuthAdmin)
 	//index
-	admin.GET("/admin", RenderAdmin)
+	admin.GET("", RenderAdmin)
 	//user
-	admin.GET("/admin/userList", GetUserList)
+	admin.GET("/userList", RenderAdminUserList)
 	admin.POST("/admin/user", AddUser)
 	admin.GET("/admin/user/:id", GetUser)
 	admin.PUT("/admin/user/:id", UpdateUser)
@@ -159,6 +159,10 @@ func RenderLogin(c echo.Context) error {
 
 func RenderAdmin(c echo.Context) error {
 	return c.Render(http.StatusOK, "admin", nil)
+}
+
+func RenderAdminUserList(c echo.Context) error {
+	return c.Render(http.StatusOK, "user_list", nil)
 }
 
 func JsonOk(c echo.Context, i interface{}) error {
