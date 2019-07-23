@@ -30,7 +30,7 @@ func GetRecordList(c echo.Context) error {
 		pageSize = 10
 	}
 
-	result, err := findSrv.GetRecordList(page, pageSize)
+	result, err := findSrv.GetRecordList(page, pageSize, model.AllFind, model.ReviewSuccess)
 	if err != nil {
 		findSrv.Logger.Errorf("get record err:%s", err.Error())
 	}
@@ -304,4 +304,113 @@ func DeleteRecord(c echo.Context) (err error) {
 	}
 
 	return JsonOk(c, struct{}{})
+}
+
+func GetAdminRecordList(c echo.Context) error {
+	role := GetUserRole(c)
+	if role <= model.USER {
+		return JsonBadRequest(c, "权限不足")
+	}
+
+	reqPage := c.QueryParam("page")
+	reqPageSize := c.QueryParam("pageSize")
+	reqIsFind := c.QueryParam("isfind")
+	reqStatus := c.QueryParam("status")
+
+	page, err := strconv.Atoi(reqPage)
+	if err != nil {
+		return JsonBadRequest(c, "参数错误")
+	}
+
+	pageSize, err := strconv.Atoi(reqPageSize)
+	if err != nil {
+		return JsonBadRequest(c, "参数错误")
+	}
+
+	isFind, err := strconv.Atoi(reqIsFind)
+	if err != nil {
+		return JsonBadRequest(c, "参数错误")
+	}
+
+	status, err := strconv.Atoi(reqStatus)
+	if err != nil {
+		return JsonBadRequest(c, "参数错误")
+	}
+
+	if page < 1 {
+		page = 1
+	}
+
+	if pageSize <= 0 || pageSize > 200 {
+		pageSize = 10
+	}
+
+	if isFind < model.AllFind || isFind > model.FindOK {
+		isFind = model.AllFind
+	}
+
+	if status < model.AllReview || status > model.ReviewSuccess {
+		status = model.AllReview
+	}
+
+	result, err := findSrv.GetRecordList(page, pageSize, isFind, status)
+	if err != nil {
+		findSrv.Logger.Errorf("get record err:%s", err.Error())
+	}
+
+	var res interface{}
+	res = struct{}{}
+
+	if result != nil {
+		res = result
+	}
+
+	return JsonOk(c, res)
+}
+
+func GetUserRecordList(c echo.Context) error {
+	reqPage := c.QueryParam("page")
+	reqPageSize := c.QueryParam("pageSize")
+	reqIsFind := c.QueryParam("isfind")
+
+	page, err := strconv.Atoi(reqPage)
+	if err != nil {
+		return JsonBadRequest(c, "参数错误")
+	}
+
+	pageSize, err := strconv.Atoi(reqPageSize)
+	if err != nil {
+		return JsonBadRequest(c, "参数错误")
+	}
+
+	isFind, err := strconv.Atoi(reqIsFind)
+	if err != nil {
+		return JsonBadRequest(c, "参数错误")
+	}
+
+	if page < 1 {
+		page = 1
+	}
+
+	if pageSize <= 0 || pageSize > 200 {
+		pageSize = 10
+	}
+
+	if isFind < model.AllFind || isFind > model.FindOK {
+		isFind = model.AllFind
+	}
+
+	result, err := findSrv.GetUserRecordList(GetSessionId(c), page, pageSize, isFind)
+	if err != nil {
+		findSrv.Logger.Errorf("get record err:%s", err.Error())
+	}
+
+	var res interface{}
+	res = struct{}{}
+
+	if result != nil {
+		res = result
+	}
+
+	return JsonOk(c, res)
 }

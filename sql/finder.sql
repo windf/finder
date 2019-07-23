@@ -53,6 +53,7 @@ CREATE TABLE `record` (
   `update_time` int(11) NOT NULL DEFAULT '0' COMMENT '修改时间',
   PRIMARY KEY (`id`),
   KEY `publisher_id` (`publisher_id`),
+  KEY `status_name` (`status`,`name`),
   KEY `isfind_status` (`isfind`,`status`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='发布记录表';
 

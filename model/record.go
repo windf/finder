@@ -1,5 +1,16 @@
 package model
 
+const (
+	AllFind = 0
+	NotFind = 1
+	FindOK  = 2
+
+	AllReview     = 0
+	UnReview      = 1
+	ReviewFail    = 2
+	ReviewSuccess = 3
+)
+
 type Record struct {
 	ID          int64  `json:"id" gorm:"column:id"`
 	PublisherId int64  `json:"publisher_id" gorm:"column:publisher_id"`

@@ -19,14 +19,14 @@ func (d *Dao) GetRecordCache(id int64) (record *model.Record, err error) {
 	return
 }
 
-func (d *Dao) GetBatchRecordCache(id int64) (record *model.Record, err error) {
+func (d *Dao) GetCommentCache(id int64) (comment *model.Comment, err error) {
 	c := d.cpool.Get()
 	defer c.Close()
 
-	redisKey := RKRecord(id)
+	redisKey := RKComment(id)
 	reply, err := redis.Bytes(c.Do("GET", redisKey))
 	if err == nil {
-		if err = json.Unmarshal(reply, &record); err == nil {
+		if err = json.Unmarshal(reply, &comment); err == nil {
 			return
 		}
 	}

@@ -42,7 +42,8 @@ func Init(c *config.Config, s *service.Service) {
 	s.Echo.POST("/login", Login)
 	s.Echo.POST("/logout", Logout)
 	s.Echo.POST("/register", Register)
-	s.Echo.GET("/comment/:id/", GetCommentList)
+	s.Echo.GET("/comment/:id", GetCommentList)
+	s.Echo.POST("/comment/:id", AddComment)
 	s.Echo.GET("/search", SearchRecordDetail)
 	s.Echo.GET("/record/:id", GetRecordDetail)
 	s.Echo.GET("/recordList", GetRecordList)
@@ -60,7 +61,11 @@ func Init(c *config.Config, s *service.Service) {
 	admin.PUT("/admin/record/:id", UpdateRecord)
 	admin.DELETE("/admin/record/:id", DeleteRecord)
 	admin.PUT("/admin/record/:id/review", ReviewRecord)
-
+	admin.GET("/admin/recordList", GetAdminRecordList)
+	admin.GET("/admin/user/recordList", GetUserRecordList)
+	//comment
+	admin.GET("/admin/commentList", GetAdminCommentList)
+	admin.DELETE("/admin/comment/:id", DeleteComment)
 	s.Echo.Logger.Fatal(s.Echo.Start(c.HttpAddress))
 }
 

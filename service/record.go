@@ -27,9 +27,17 @@ func (s *Service) GetRecordByName(name string) (result []*model.Record, err erro
 	return
 }
 
-func (s *Service) GetRecordList(page, pageSize int) (result []*model.Record, err error) {
-	//todo 加查询状态 isfind status
-	result, err = s.dao.GetRecordList(page, pageSize)
+func (s *Service) GetRecordList(page, pageSize, isFind, status int) (result []*model.Record, err error) {
+	result, err = s.dao.GetRecordList(page, pageSize, isFind, status)
+	if err != nil {
+		s.Logger.Errorf("GetRecordList err:%s ", err.Error())
+		return
+	}
+	return
+}
+
+func (s *Service) GetUserRecordList(userId int64, page, pageSize, isFind int) (result []*model.Record, err error) {
+	result, err = s.dao.GetUserRecordList(userId, page, pageSize, isFind)
 	if err != nil {
 		s.Logger.Errorf("GetRecordList err:%s ", err.Error())
 		return

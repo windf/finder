@@ -22,9 +22,38 @@ func (d *Dao) GetRecordById(id int64) (result *model.Record, err error) {
 	return
 }
 
-func (d *Dao) GetRecordList(page, pageSize int) (result []*model.Record, err error) {
+func (d *Dao) GetRecordList(page, pageSize, isFind, status int) (result []*model.Record, err error) {
 	offset := (page - 1) * pageSize
-	err = d.dbr.Table(_recordTable).Offset(offset).Limit(pageSize).Select("*").Find(&result).Order("id DESC").Error
+	search := d.dbr.Table(_recordTable)
+	if isFind > model.AllFind && status > model.AllReview {
+		search = search.Where("isfind=? AND status=?", isFind, status)
+	} else if isFind == model.AllFind && status > model.AllReview {
+		search = search.Where("status=?", status)
+	} else if isFind > model.AllFind && status == model.AllReview {
+		search = search.Where("isfind=?", isFind)
+	}
+
+	err = search.Select("*").Find(&result).Offset(offset).Limit(pageSize).Order("id DESC").Error
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			result = nil
+			err = nil
+		}
+		return
+	}
+	return
+}
+
+func (d *Dao) GetUserRecordList(userId int64, page, pageSize, isFind int) (result []*model.Record, err error) {
+	offset := (page - 1) * pageSize
+	search := d.dbr.Table(_recordTable)
+	if isFind > model.AllFind {
+		search = search.Where("userId=? AND isfind=?", userId, isFind)
+	} else {
+		search = search.Where("userId=?", userId)
+	}
+
+	err = search.Select("*").Find(&result).Offset(offset).Limit(pageSize).Order("id DESC").Error
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
 			result = nil
@@ -36,7 +65,7 @@ func (d *Dao) GetRecordList(page, pageSize int) (result []*model.Record, err err
 }
 
 func (d *Dao) GetRecordByName(name string) (result []*model.Record, err error) {
-	err = d.dbr.Table(_recordTable).Where("name=?", name).Select("*").Find(&result).Error
+	err = d.dbr.Table(_recordTable).Where("status=? AND name=?", model.ReviewSuccess, name).Select("*").Find(&result).Error
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
 			result = nil
