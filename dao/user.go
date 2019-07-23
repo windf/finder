@@ -47,6 +47,7 @@ func (d *Dao) GetUserInfoByName(userName string) (result *model.User, err error)
 }
 
 func (d *Dao) GetUserInfoByNameAndPassword(userName, password string) (result *model.User, err error) {
+	result = new(model.User)
 	err = d.dbr.Table(_userTable).Where("username=? AND password", userName, password).Select("*").Take(&result).Error
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {

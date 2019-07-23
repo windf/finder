@@ -36,7 +36,7 @@ func Init(c *config.Config, s *service.Service) {
 	s.Echo.Use(middleware.Recover())
 	s.Echo.Use(middleware.Logger())
 	s.Echo.Use(middleware.RequestID())
-	s.Echo.Use(session.Middleware(sessions.NewCookieStore([]byte("secret"))))
+	s.Echo.Use(session.Middleware(sessions.NewCookieStore([]byte(c.Secret))))
 
 	//template
 	t := &Template{
@@ -48,6 +48,7 @@ func Init(c *config.Config, s *service.Service) {
 	s.Echo.HTTPErrorHandler = customHTTPErrorHandler
 
 	// Routes
+	s.Echo.GET("/login", RenderLogin)
 	s.Echo.POST("/login", Login)
 	s.Echo.POST("/logout", Logout)
 	s.Echo.POST("/register", Register)

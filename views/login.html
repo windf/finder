@@ -1,1 +1,15 @@
-{{define "login"}}login{{end}}
+{{define "login"}}
+<h2>Login</h2>
+<form action="/login" method="POST">
+    <p>
+        <label for="user_name" style="width:100px">user_name: </label>
+        <input type="text" id="user_name" name="user_name"  />
+    </p>
+    <p>
+        <label for="password" style="width:100px">Password: </label>
+        <input type="password" id="password" name="password" />
+    </p>
+    <input type="submit" value="提交" style="width:100px"/>
+</form>
+
+{{end}}

@@ -2,6 +2,9 @@ env = "dev"
 logLevel = "DEBUG"
 httpAddress = "0.0.0.0:8080"
 prefix = "finder"
+secret = "eKOOeUOjzxtBNGVCdx36"
+
+
 
 [database]
     [database.read]

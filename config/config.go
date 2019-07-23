@@ -12,6 +12,7 @@ type Config struct {
 	LogLevel    string
 	HttpAddress string
 	Prefix      string
+	Secret      string
 }
 
 type Database struct {
