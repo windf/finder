@@ -26,7 +26,8 @@ func Login(c echo.Context) error {
 	if err != nil {
 		return JsonBadRequest(c, "登录失败，请稍后重试")
 	}
-	return RenderAdmin(c)
+
+	return RedirectAdmin(c)
 }
 
 func Logout(c echo.Context) error {
@@ -35,5 +36,5 @@ func Logout(c echo.Context) error {
 		return JsonBadRequest(c, "退出失败，请稍后重试")
 	}
 
-	return RenderLogin(c)
+	return RedirectLogin(c)
 }

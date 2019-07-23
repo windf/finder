@@ -85,12 +85,12 @@ func MiddlewareAuthAdmin(next echo.HandlerFunc) echo.HandlerFunc {
 	return func(c echo.Context) error {
 		userId := GetSessionId(c)
 		if userId <= 0 {
-			return RenderLogin(c)
+			return RedirectLogin(c)
 		}
 
 		userInfo, err := findSrv.GetUser(userId)
 		if err != nil || userInfo == nil {
-			return RenderLogin(c)
+			return RedirectLogin(c)
 		}
 
 		return next(c)
@@ -153,6 +153,16 @@ func GetUserRole(c echo.Context) (role int) {
 	return
 }
 
+//重定向
+func RedirectLogin(c echo.Context) error {
+	return c.Redirect(http.StatusFound, "login")
+}
+
+func RedirectAdmin(c echo.Context) error {
+	return c.Redirect(http.StatusFound, "admin")
+}
+
+//模板渲染
 func RenderLogin(c echo.Context) error {
 	return c.Render(http.StatusOK, "login", nil)
 }
