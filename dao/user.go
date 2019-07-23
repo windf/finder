@@ -23,6 +23,7 @@ func (d *Dao) GetUserList(page, pageSize int) (result []*model.User, err error) 
 }
 
 func (d *Dao) GetUserInfoById(id int64) (result *model.User, err error) {
+	result = new(model.User)
 	err = d.dbr.Table(_userTable).Where("id=?", id).Select("*").Take(&result).Error
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
@@ -35,6 +36,7 @@ func (d *Dao) GetUserInfoById(id int64) (result *model.User, err error) {
 }
 
 func (d *Dao) GetUserInfoByName(userName string) (result *model.User, err error) {
+	result = new(model.User)
 	err = d.dbr.Table(_userTable).Where("username=?", userName).Select("*").Take(&result).Error
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
