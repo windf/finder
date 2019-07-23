@@ -4,11 +4,12 @@ import (
 	"finder/model"
 	"finder/util"
 	"github.com/labstack/echo"
+	"net/http"
 	"strconv"
 	"time"
 )
 
-func GetUserList(c echo.Context) error {
+func RenderUserList(c echo.Context) error {
 	role := GetUserRole(c)
 	if role <= model.USER {
 		return JsonBadRequest(c, "权限不足")
@@ -47,10 +48,14 @@ func GetUserList(c echo.Context) error {
 		res = result
 	}
 
-	return JsonOk(c, res)
+	return c.Render(http.StatusOK, "user_list", res)
 }
 
-func GetUser(c echo.Context) error {
+func RenderAddUser(c echo.Context) error {
+	return c.Render(http.StatusOK, "add_user", nil)
+}
+
+func RenderUser(c echo.Context) error {
 	id := c.Param("id")
 	userId, err := strconv.ParseInt(id, 10, 64)
 	if err != nil {
@@ -81,7 +86,7 @@ func GetUser(c echo.Context) error {
 		res = result
 	}
 
-	return JsonOk(c, res)
+	return c.Render(http.StatusOK, "user", res)
 }
 
 func AddUser(c echo.Context) error {

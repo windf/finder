@@ -3,7 +3,12 @@ package controllers
 import (
 	"finder/model"
 	"github.com/labstack/echo"
+	"net/http"
 )
+
+func RenderLogin(c echo.Context) error {
+	return c.Render(http.StatusOK, "login", nil)
+}
 
 func Login(c echo.Context) error {
 	userName := c.FormValue("user_name")

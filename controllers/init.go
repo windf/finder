@@ -48,36 +48,39 @@ func Init(c *config.Config, s *service.Service) {
 	s.Echo.HTTPErrorHandler = customHTTPErrorHandler
 
 	// Routes
+	s.Echo.GET("/", RenderIndex)
 	s.Echo.GET("/login", RenderLogin)
 	s.Echo.POST("/login", Login)
 	s.Echo.POST("/logout", Logout)
+	s.Echo.GET("/register", RenderRegister)
 	s.Echo.POST("/register", Register)
 	s.Echo.GET("/comment/:id", GetCommentList)
 	s.Echo.POST("/comment/:id", AddComment)
 	s.Echo.GET("/search", SearchRecordDetail)
-	s.Echo.GET("/record/:id", GetRecordDetail)
-	s.Echo.GET("/recordList", GetRecordList)
+	s.Echo.GET("/record/:id", RenderRecord)
+	s.Echo.GET("/recordList", RenderRecordList)
 
 	admin := s.Echo.Group("/admin", MiddlewareAuthAdmin)
 	//index
 	admin.GET("", RenderAdmin)
 	//user
-	admin.GET("/userList", RenderAdminUserList)
-	admin.POST("/admin/user", AddUser)
-	admin.GET("/admin/user/:id", GetUser)
-	admin.PUT("/admin/user/:id", UpdateUser)
-	admin.DELETE("/admin/user/:id", DeleteUser)
-	admin.PUT("/admin/user/:id/password", UpdatePassword)
+	admin.GET("/userList", RenderUserList)
+	admin.GET("/user", RenderAddUser)
+	admin.POST("/user", AddUser)
+	admin.GET("/user/:id", RenderUser)
+	admin.PUT("/user/:id", UpdateUser)
+	admin.DELETE("/user/:id", DeleteUser)
+	admin.PUT("/user/:id/password", UpdatePassword)
 	//record
-	admin.POST("/admin/record", AddRecord)
-	admin.PUT("/admin/record/:id", UpdateRecord)
-	admin.DELETE("/admin/record/:id", DeleteRecord)
-	admin.PUT("/admin/record/:id/review", ReviewRecord)
-	admin.GET("/admin/recordList", GetAdminRecordList)
-	admin.GET("/admin/user/recordList", GetUserRecordList)
+	admin.POST("/record", AddRecord)
+	admin.PUT("/record/:id", UpdateRecord)
+	admin.DELETE("/record/:id", DeleteRecord)
+	admin.PUT("/record/:id/review", ReviewRecord)
+	admin.GET("/recordList", GetAdminRecordList)
+	admin.GET("/user/recordList", GetUserRecordList)
 	//comment
-	admin.GET("/admin/commentList", GetAdminCommentList)
-	admin.DELETE("/admin/comment/:id", DeleteComment)
+	admin.GET("/commentList", GetAdminCommentList)
+	admin.DELETE("/comment/:id", DeleteComment)
 	s.Echo.Logger.Fatal(s.Echo.Start(c.HttpAddress))
 }
 
@@ -160,19 +163,6 @@ func RedirectLogin(c echo.Context) error {
 
 func RedirectAdmin(c echo.Context) error {
 	return c.Redirect(http.StatusFound, "/admin")
-}
-
-//模板渲染
-func RenderLogin(c echo.Context) error {
-	return c.Render(http.StatusOK, "login", nil)
-}
-
-func RenderAdmin(c echo.Context) error {
-	return c.Render(http.StatusOK, "admin", nil)
-}
-
-func RenderAdminUserList(c echo.Context) error {
-	return c.Render(http.StatusOK, "user_list", nil)
 }
 
 func JsonOk(c echo.Context, i interface{}) error {

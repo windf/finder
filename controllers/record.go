@@ -4,11 +4,12 @@ import (
 	"finder/model"
 	"finder/util"
 	"github.com/labstack/echo"
+	"net/http"
 	"strconv"
 	"time"
 )
 
-func GetRecordList(c echo.Context) error {
+func RenderRecordList(c echo.Context) error {
 	reqPage := c.QueryParam("page")
 	reqPageSize := c.QueryParam("pageSize")
 
@@ -42,10 +43,11 @@ func GetRecordList(c echo.Context) error {
 		res = result
 	}
 
-	return JsonOk(c, res)
+	return c.Render(http.StatusOK, "record_list", res)
+	//return JsonOk(c, res)
 }
 
-func GetRecordDetail(c echo.Context) (err error) {
+func RenderRecord(c echo.Context) (err error) {
 	id := c.Param("id")
 	recordId, err := strconv.ParseInt(id, 10, 64)
 	if err != nil {
@@ -67,8 +69,7 @@ func GetRecordDetail(c echo.Context) (err error) {
 	if result != nil {
 		res = result
 	}
-
-	return JsonOk(c, res)
+	return c.Render(http.StatusOK, "record", res)
 }
 
 func SearchRecordDetail(c echo.Context) (err error) {
