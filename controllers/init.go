@@ -8,6 +8,8 @@ import (
 	"github.com/labstack/echo"
 	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/middleware"
+	"html/template"
+	"io"
 	"net/http"
 )
 
@@ -19,6 +21,14 @@ type Message struct {
 	Data    interface{} `json:"data,omitempty" xml:"data,omitempty"`
 }
 
+type Template struct {
+	templates *template.Template
+}
+
+func (t *Template) Render(w io.Writer, name string, data interface{}, c echo.Context) error {
+	return t.templates.ExecuteTemplate(w, name, data)
+}
+
 func Init(c *config.Config, s *service.Service) {
 	findSrv = s
 
@@ -28,17 +38,16 @@ func Init(c *config.Config, s *service.Service) {
 	s.Echo.Use(middleware.RequestID())
 	s.Echo.Use(session.Middleware(sessions.NewCookieStore([]byte("secret"))))
 
+	//template
+	t := &Template{
+		templates: template.Must(template.ParseGlob("views/*.html")),
+	}
+	s.Echo.Renderer = t
+
 	//error handler
 	s.Echo.HTTPErrorHandler = customHTTPErrorHandler
 
 	// Routes
-	/*
-		e.POST("/users", controllers.CreateUser)
-		e.GET("/users/:id", controllers.GetUser)
-		e.PUT("/users/:id", controllers.UpdateUser)
-		e.DELETE("/users/:id", controllers.DeleteUser)
-	*/
-
 	s.Echo.POST("/login", Login)
 	s.Echo.POST("/logout", Logout)
 	s.Echo.POST("/register", Register)
@@ -90,7 +99,12 @@ func GetSessionId(c echo.Context) (userId int64) {
 	if err != nil {
 		return
 	}
-	return sess.Values["id"].(int64)
+
+	if id, ok := sess.Values["id"].(int64); ok {
+		return id
+	}
+
+	return
 }
 
 func SetSessionId(c echo.Context, userId int64) (err error) {
