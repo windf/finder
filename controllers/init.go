@@ -47,6 +47,9 @@ func Init(c *config.Config, s *service.Service) {
 	//error handler
 	s.Echo.HTTPErrorHandler = customHTTPErrorHandler
 
+	//静态目录
+	s.Echo.Static("/static", "static")
+
 	// Routes
 	s.Echo.GET("/", RenderIndex)
 	s.Echo.GET("/login", RenderLogin)
