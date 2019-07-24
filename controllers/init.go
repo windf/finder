@@ -117,7 +117,20 @@ func GetSessionId(c echo.Context) (userId int64) {
 	return
 }
 
-func SetSessionId(c echo.Context, userId int64) (err error) {
+func GetSessionName(c echo.Context) (name string) {
+	sess, err := session.Get("session", c)
+	if err != nil {
+		return
+	}
+
+	if tmp, ok := sess.Values["name"].(string); ok {
+		return tmp
+	}
+
+	return
+}
+
+func SetSessionId(c echo.Context, userId int64, name string) (err error) {
 	sess, err := session.Get("session", c)
 	if err != nil {
 		return
@@ -128,6 +141,7 @@ func SetSessionId(c echo.Context, userId int64) (err error) {
 		HttpOnly: true,
 	}
 	sess.Values["id"] = userId
+	sess.Values["name"] = name
 	return sess.Save(c.Request(), c.Response())
 }
 

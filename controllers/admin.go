@@ -6,5 +6,10 @@ import (
 )
 
 func RenderAdmin(c echo.Context) error {
-	return c.Render(http.StatusOK, "admin", nil)
+	result := map[string]interface{}{
+		"name": GetSessionName(c),
+		"role": GetUserRole(c),
+	}
+
+	return c.Render(http.StatusOK, "admin", result)
 }
