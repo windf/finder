@@ -4,9 +4,21 @@
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
         <!-- Sidebar user panel -->
+        {{if eq .role 1}}}
         <div class="user-panel">
-            <a href="#">欢迎你，{{index . "name"}} {{index . "role"}}</a>
+            <a href="#">欢迎你，{{.name}} 普通用户</a>
         </div>
+
+        {{else if eq .role 2}}}
+        <div class="user-panel">
+            <a href="#">欢迎你，{{.name}} 志愿者</a>
+        </div>
+
+        {{else if eq .role 3}}}
+        <div class="user-panel">
+            <a href="#">欢迎你，{{.name}} 管理员</a>
+        </div>
+        {{end}}
         <!-- search form -->
 
         <!-- /.search form -->
