@@ -18,7 +18,7 @@ func Register(c echo.Context) error {
 	nickName := c.FormValue("nickname")
 	phone := c.FormValue("phone")
 	email := c.FormValue("email")
-	remark := c.FormValue("remark")
+	rePassword := c.FormValue("re_password")
 
 	if userName == "" {
 		return JsonBadRequest(c, "请输入用户名")
@@ -26,6 +26,10 @@ func Register(c echo.Context) error {
 
 	if password == "" {
 		return JsonBadRequest(c, "请输入密码")
+	}
+
+	if rePassword != password {
+		return JsonBadRequest(c, "两次输入的密码不一致")
 	}
 
 	if findSrv.CheckUser(userName) {
@@ -38,7 +42,6 @@ func Register(c echo.Context) error {
 		NickName:   nickName,
 		Phone:      phone,
 		Email:      email,
-		Remark:     remark,
 		CreateTime: time.Now().Unix(),
 		UpdateTime: time.Now().Unix(),
 	}

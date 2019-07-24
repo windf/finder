@@ -83,10 +83,12 @@
     $('form').submit(function (e) {
       e.preventDefault();
       if ($('#user_name').val() == '') {
-         $("#show_msg").text('请输入用户名');
-         return
+        $("#user_name").focus();
+        $("#show_msg").text('请输入用户名');
+        return
       }
       if ($('#password').val() == '') {
+        $("#password").focus();
         $("#show_msg").text('请输入密码');
         return
       }

@@ -1,3 +1,145 @@
 {{define "register"}}
-    register
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Finder | 注册</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.7 -->
+    <link rel="stylesheet" href="/static/bootstrap/dist/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/static/font-awesome/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="/static/Ionicons/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="/static/css/AdminLTE.min.css">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="/static/plugins/iCheck/square/blue.css">
+
+</head>
+<body class="hold-transition register-page">
+<div class="register-box">
+    <div class="register-logo">
+        <a href="/"><b>Finder</b></a>
+    </div>
+
+    <div class="register-box-body">
+        <p class="login-box-msg"></p>
+
+        <form action="/register" method="post">
+            <div class="form-group has-error">
+                <span class="help-block" id="show_msg"></span>
+            </div>
+
+            <div class="form-group has-feedback">
+                <input type="text" class="form-control" name="user_name" id="user_name" placeholder="用户名">
+                <span class="glyphicon glyphicon-user form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <input type="email" class="form-control" name="email" id="email" placeholder="邮箱">
+                <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <input type="text" class="form-control"  name="nickname" id="nickname" placeholder="姓名">
+                <span class="glyphicon glyphicon-user form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <input type="text" class="form-control" name="phone" id="phone" placeholder="联系方式">
+                <span class="glyphicon glyphicon glyphicon-phone form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <input type="password" class="form-control" name="password" id="password" placeholder="密码">
+                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <input type="password" class="form-control" name="re_password" id="re_password" placeholder="重新输入密码">
+                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+            </div>
+            <div class="row">
+                <!-- /.col -->
+                <div class="col-xs-12">
+                    <button type="submit" class="btn btn-primary btn-block btn-flat">注册</button>
+                </div>
+                <!-- /.col -->
+            </div>
+        </form>
+        <p></p>
+        <a href="/login" class="text-center">登录</a>
+    </div>
+    <!-- /.form-box -->
+</div>
+<!-- /.register-box -->
+
+<!-- jQuery 3 -->
+<script src="/static/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="/static/bootstrap/dist/js/bootstrap.min.js"></script>
+<!-- iCheck -->
+<script src="/static/plugins/iCheck/icheck.min.js"></script>
+<script>
+    $(function () {
+        $('input').iCheck({
+            checkboxClass: 'icheckbox_square-blue',
+            radioClass: 'iradio_square-blue',
+            increaseArea: '20%' /* optional */
+        });
+
+        $('form').submit(function (e) {
+            e.preventDefault();
+            if ($('#user_name').val() == '') {
+                $("#user_name").focus();
+                $("#show_msg").text('请输入用户名');
+                return
+            }
+
+            if ($('#email').val() == '') {
+                $("#email").focus();
+                $("#show_msg").text('请输入邮箱');
+                return
+            }
+
+            if ($('#nickname').val() == '') {
+                $("#nickname").focus();
+                $("#show_msg").text('请输入姓名');
+                return
+            }
+
+            if ($('#phone').val() == '') {
+                $("#phone").focus();
+                $("#show_msg").text('请输入联系方式');
+                return
+            }
+
+            if ($('#password').val() == '') {
+                $("#password").focus();
+                $("#show_msg").text('请输入密码');
+                return
+            }
+
+
+            if ($('#re_password').val() == '') {
+                $("#re_password").focus();
+                $("#show_msg").text('请再次输入密码');
+                return
+            }
+
+            $.ajax({
+                url: e.currentTarget.action,
+                type: 'post',
+                dataType: 'json',
+                data: $('form').serialize(),
+                success: function(data) {
+                    window.location = '/login';
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    $("#show_msg").text(XMLHttpRequest.responseJSON.errmsg);
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>
 {{end}}

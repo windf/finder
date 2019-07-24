@@ -69,7 +69,7 @@ CREATE TABLE `user` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '自增主键id',
   `username` varchar(32) NOT NULL DEFAULT '' COMMENT '用户名',
   `password` varchar(32) NOT NULL DEFAULT '' COMMENT '密码',
-  `nickname` varchar(32) NOT NULL DEFAULT '',
+  `nickname` varchar(32) NOT NULL DEFAULT '' COMMENT '姓名',
   `phone` varchar(32) NOT NULL DEFAULT '' COMMENT '手机号码',
   `email` varchar(32) NOT NULL DEFAULT '' COMMENT '电子邮件',
   `remark` varchar(200) DEFAULT NULL COMMENT '备注',
