@@ -81,17 +81,15 @@
     });
     
     $('form').submit(function (e) {
-        e.preventDefault();
-        if ($('#user_name').val() == '') {
-           $("#show_msg").text('请输入用户名');
-           return
-        }
-        if ($('#password').val() == '') {
-          $("#show_msg").text('请输入密码');
-          return
-        }
-
-        alert($('form').serialize());
+      e.preventDefault();
+      if ($('#user_name').val() == '') {
+         $("#show_msg").text('请输入用户名');
+         return
+      }
+      if ($('#password').val() == '') {
+        $("#show_msg").text('请输入密码');
+        return
+      }
 
       $.ajax({
         url: e.currentTarget.action,
@@ -103,7 +101,7 @@
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
           $("#show_msg").text(XMLHttpRequest.responseJSON.errmsg);
-        },
+        }
       });
     });
   });
