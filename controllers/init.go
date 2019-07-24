@@ -168,6 +168,10 @@ func RedirectAdmin(c echo.Context) error {
 	return c.Redirect(http.StatusFound, "/admin")
 }
 
+func Redirect404(c echo.Context) error {
+	return c.Redirect(http.StatusFound, "/404")
+}
+
 func JsonOk(c echo.Context, i interface{}) error {
 	code := http.StatusOK
 	return c.JSON(code, &Message{
@@ -198,7 +202,7 @@ func customHTTPErrorHandler(err error, c echo.Context) {
 		errorCode := httpError.Code
 		switch errorCode {
 		case http.StatusNotFound:
-			JsonError(c, http.StatusNotFound, "Not Found")
+			Redirect404(c)
 		default:
 			JsonError(c, http.StatusInternalServerError, "内部错误")
 		}
