@@ -26,19 +26,23 @@
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    <a href="/index"><b>Finder</b></a>
+    <a href="/"><b>Finder</b></a>
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">
-    <p class="login-box-msg"></p>
+
 
     <form action="/login" method="post">
+      <div class="form-group has-error">
+        <span class="help-block" id="show_msg"></span>
+      </div>
+
       <div class="form-group has-feedback">
-        <input type="text" class="form-control" placeholder="用户名">
+        <input type="text" class="form-control" value="user_name" id="user_name" placeholder="用户名">
         <span class="glyphicon glyphicon-user form-control-feedback"></span>
       </div>
       <div class="form-group has-feedback">
-        <input type="password" class="form-control" placeholder="密码">
+        <input type="password" class="form-control" value="password" id="password" placeholder="密码">
         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
       </div>
       <div class="row">
@@ -74,6 +78,30 @@
       checkboxClass: 'icheckbox_square-blue',
       radioClass: 'iradio_square-blue',
       increaseArea: '20%' /* optional */
+    });
+    
+    $('form').submit(function (e) {
+        e.preventDefault();
+        if ($('#user_name').val() == "") {
+           $("#show_msg").text("请输入用户名");
+           return
+        }
+        if ($('#password').val() == "") {
+          $("#show_msg").text("请输入密码");
+          return
+        }
+
+        alert($("form").serialize());
+
+      $.ajax({
+        url: e.currentTarget.action,
+        type: 'post',
+        dataType: 'json',
+        data: $("form").serialize(),
+        success: function(data) {
+           alert(data);
+        }
+      });
     });
   });
 </script>
