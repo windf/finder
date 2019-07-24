@@ -54,6 +54,7 @@ func Init(c *config.Config, s *service.Service) {
 	s.Echo.GET("/", RenderIndex)
 	s.Echo.GET("/login", RenderLogin)
 	s.Echo.POST("/login", Login)
+	s.Echo.GET("/logout", Logout)
 	s.Echo.POST("/logout", Logout)
 	s.Echo.GET("/register", RenderRegister)
 	s.Echo.POST("/register", Register)
@@ -170,7 +171,7 @@ func GetUserRole(c echo.Context) (role int) {
 	if result.Status == model.StatusERR {
 		role = model.UserError
 	}
-
+	role = result.Role
 	return
 }
 
