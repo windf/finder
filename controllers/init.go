@@ -62,6 +62,7 @@ func Init(c *config.Config, s *service.Service) {
 	s.Echo.GET("/search", SearchRecordDetail)
 	s.Echo.GET("/record/:id", RenderRecord)
 	s.Echo.GET("/recordList", RenderRecordList)
+	s.Echo.GET("/404", Render404)
 
 	admin := s.Echo.Group("/admin", MiddlewareAuthAdmin)
 	//index
@@ -170,6 +171,10 @@ func RedirectAdmin(c echo.Context) error {
 
 func Redirect404(c echo.Context) error {
 	return c.Redirect(http.StatusFound, "/404")
+}
+
+func Render404(c echo.Context) error {
+	return c.Render(http.StatusOK, "404", nil)
 }
 
 func JsonOk(c echo.Context, i interface{}) error {
