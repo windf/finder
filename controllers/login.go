@@ -32,7 +32,7 @@ func Login(c echo.Context) error {
 		return JsonBadRequest(c, "登录失败，请稍后重试")
 	}
 
-	return RedirectAdmin(c)
+	return JsonOk(c, struct{}{})
 }
 
 func Logout(c echo.Context) error {

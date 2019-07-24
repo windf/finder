@@ -82,12 +82,12 @@
     
     $('form').submit(function (e) {
         e.preventDefault();
-        if ($('#user_name').val() == "") {
-           $("#show_msg").text("请输入用户名");
+        if ($('#user_name').val() == '') {
+           $("#show_msg").text('请输入用户名');
            return
         }
-        if ($('#password').val() == "") {
-          $("#show_msg").text("请输入密码");
+        if ($('#password').val() == '') {
+          $("#show_msg").text('请输入密码');
           return
         }
 
@@ -99,15 +99,10 @@
         dataType: 'json',
         data: $('form').serialize(),
         success: function(data) {
-           alert(data);
+          window.location = '/admin';
         },
         error: function(XMLHttpRequest, textStatus, errorThrown) {
-          console.log(XMLHttpRequest);
-          console.log(textStatus);
-          console.log(errorThrown);
-          alert(XMLHttpRequest.status);
-          alert(XMLHttpRequest.readyState);
-          alert(textStatus);
+          $("#show_msg").text(XMLHttpRequest.responseJSON.errmsg);
         },
       });
     });
