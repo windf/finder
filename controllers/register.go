@@ -42,6 +42,7 @@ func Register(c echo.Context) error {
 		NickName:   nickName,
 		Phone:      phone,
 		Email:      email,
+		Role:       model.USER,
 		CreateTime: time.Now().Unix(),
 		UpdateTime: time.Now().Unix(),
 	}
