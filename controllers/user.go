@@ -20,12 +20,12 @@ func RenderUserList(c echo.Context) error {
 
 	page, err := strconv.Atoi(reqPage)
 	if err != nil {
-		return JsonBadRequest(c, "参数错误")
+		page = 1
 	}
 
 	pageSize, err := strconv.Atoi(reqPageSize)
 	if err != nil {
-		return JsonBadRequest(c, "参数错误")
+		pageSize = 10
 	}
 
 	if page < 1 {
