@@ -74,24 +74,20 @@
             $('.del').click(function () {
                 var id = $(this).val();
                 if (confirm('确认删除？')) {
-                    alert(id);
+                    $.ajax({
+                        url: '/admin/user/' + id,
+                        type: 'delete',
+                        dataType: 'json',
+                        success: function(data) {
+                            window.location = '/admin/userList?page=' + page + '&pageSize=' + {{.pageSize}};
+                        },
+                        error: function(XMLHttpRequest, textStatus, errorThrown) {
+                            alert(XMLHttpRequest.responseJSON.errmsg);
+                        }
+                    });
                 } else {
-                    return false
+                    return false;
                 }
-
-                /*
-                $.ajax({
-                    url: e.currentTarget.action,
-                    type: 'post',
-                    dataType: 'json',
-                    data: $('form').serialize(),
-                    success: function(data) {
-                        window.location = '/admin';
-                    },
-                    error: function(XMLHttpRequest, textStatus, errorThrown) {
-                        $("#show_msg").text(XMLHttpRequest.responseJSON.errmsg);
-                    }
-                });*/
             });
         });
     </script>
