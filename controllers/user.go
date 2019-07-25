@@ -42,10 +42,12 @@ func RenderUserList(c echo.Context) error {
 	}
 
 	res := map[string]interface{}{
-		"userId": GetSessionId(c),
-		"name":   GetSessionName(c),
-		"role":   GetUserRole(c),
-		"title":  "管理后台-用户列表",
+		"userId":   GetSessionId(c),
+		"name":     GetSessionName(c),
+		"role":     GetUserRole(c),
+		"title":    "用户列表",
+		"leftMenu": "user",
+		"menu":     "user_list",
 	}
 
 	if result != nil {
