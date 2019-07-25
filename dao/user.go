@@ -22,6 +22,11 @@ func (d *Dao) GetUserList(page, pageSize int) (result []*model.User, err error) 
 	return
 }
 
+func (d *Dao) GetUserCount() (result int64, err error) {
+	err = d.dbr.Table(_userTable).Count(&result).Error
+	return
+}
+
 func (d *Dao) GetUserInfoById(id int64) (result *model.User, err error) {
 	result = new(model.User)
 	err = d.dbr.Table(_userTable).Where("id=?", id).Select("*").Take(&result).Error

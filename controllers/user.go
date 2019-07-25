@@ -4,6 +4,7 @@ import (
 	"finder/model"
 	"finder/util"
 	"github.com/labstack/echo"
+	"math"
 	"net/http"
 	"strconv"
 	"time"
@@ -36,19 +37,32 @@ func RenderUserList(c echo.Context) error {
 		pageSize = 10
 	}
 
+	count, err := findSrv.GetUserCount()
+	if err != nil {
+		findSrv.Logger.Errorf("GetUserCount  err:%s", err.Error())
+		return JsonServerError(c)
+	}
+
+	totalPage := int(math.Ceil(float64(count) / float64(pageSize))) //page总数
+	if page > totalPage {
+		page = totalPage
+	}
+
 	result, err := findSrv.GetUserList(page, pageSize)
 	if err != nil {
 		findSrv.Logger.Errorf("get user list err:%s", err.Error())
+		return JsonServerError(c)
 	}
 
 	res := map[string]interface{}{
-		"userId":   GetSessionId(c),
-		"name":     GetSessionName(c),
-		"role":     GetUserRole(c),
-		"title":    "用户列表",
-		"leftMenu": "user",
-		"menu":     "user_list",
-		"data":     struct{}{},
+		"userId":    GetSessionId(c),
+		"name":      GetSessionName(c),
+		"role":      GetUserRole(c),
+		"title":     "用户列表",
+		"leftMenu":  "user",
+		"menu":      "user_list",
+		"data":      struct{}{},
+		"totalPage": totalPage,
 	}
 
 	if result != nil {
@@ -88,6 +102,7 @@ func RenderUser(c echo.Context) error {
 	result, err := findSrv.GetUser(userId)
 	if err != nil {
 		findSrv.Logger.Errorf("get user err:%s", err.Error())
+		return JsonServerError(c)
 	}
 
 	var res interface{}

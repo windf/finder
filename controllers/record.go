@@ -34,6 +34,7 @@ func RenderRecordList(c echo.Context) error {
 	result, err := findSrv.GetRecordList(page, pageSize, model.AllFind, model.ReviewSuccess)
 	if err != nil {
 		findSrv.Logger.Errorf("get record err:%s", err.Error())
+		return JsonServerError(c)
 	}
 
 	var res interface{}
@@ -61,6 +62,7 @@ func RenderRecord(c echo.Context) (err error) {
 	result, err := findSrv.GetRecord(recordId)
 	if err != nil {
 		findSrv.Logger.Errorf("get record err:%s", err.Error())
+		return JsonServerError(c)
 	}
 
 	var res interface{}
@@ -87,6 +89,7 @@ func SearchRecordDetail(c echo.Context) (err error) {
 		result, err := findSrv.GetRecord(id)
 		if err != nil {
 			findSrv.Logger.Errorf("get record err:%s", err.Error())
+			return JsonServerError(c)
 		}
 
 		if result != nil {
@@ -100,6 +103,7 @@ func SearchRecordDetail(c echo.Context) (err error) {
 		result, err := findSrv.GetRecordByName(keyword)
 		if err != nil {
 			findSrv.Logger.Errorf("GetRecordByName err:%s", err.Error())
+			return JsonServerError(c)
 		}
 
 		if result != nil {
@@ -180,6 +184,7 @@ func UpdateRecord(c echo.Context) (err error) {
 	result, err := findSrv.GetRecord(recordId)
 	if err != nil {
 		findSrv.Logger.Errorf("get record err:%s", err.Error())
+		return JsonServerError(c)
 	}
 
 	if result == nil {
@@ -288,6 +293,7 @@ func DeleteRecord(c echo.Context) (err error) {
 	result, err := findSrv.GetRecord(recordId)
 	if err != nil {
 		findSrv.Logger.Errorf("get record err:%s", err.Error())
+		return JsonServerError(c)
 	}
 
 	if result == nil {
@@ -357,6 +363,7 @@ func GetAdminRecordList(c echo.Context) error {
 	result, err := findSrv.GetRecordList(page, pageSize, isFind, status)
 	if err != nil {
 		findSrv.Logger.Errorf("get record err:%s", err.Error())
+		return JsonServerError(c)
 	}
 
 	var res interface{}
@@ -404,6 +411,7 @@ func GetUserRecordList(c echo.Context) error {
 	result, err := findSrv.GetUserRecordList(GetSessionId(c), page, pageSize, isFind)
 	if err != nil {
 		findSrv.Logger.Errorf("get record err:%s", err.Error())
+		return JsonServerError(c)
 	}
 
 	var res interface{}

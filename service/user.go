@@ -15,6 +15,15 @@ func (s *Service) GetUserList(page, pageSize int) (result []*model.User, err err
 	return
 }
 
+func (s *Service) GetUserCount() (result int64, err error) {
+	result, err = s.dao.GetUserCount()
+	if err != nil {
+		s.Logger.Errorf("GetUserCount err:%s ", err.Error())
+		return
+	}
+	return
+}
+
 func (s *Service) GetUser(id int64) (result *model.User, err error) {
 	result, err = s.dao.GetUserInfoById(id)
 	if err != nil {

@@ -210,6 +210,14 @@ func JsonBadRequest(c echo.Context, msg string) error {
 	})
 }
 
+func JsonServerError(c echo.Context) error {
+	code := http.StatusInternalServerError
+	return c.JSON(code, &Message{
+		Errcode: code,
+		Errmsg:  "内部错误，请稍后重试",
+	})
+}
+
 func JsonError(c echo.Context, code int, msg string) error {
 	return c.JSON(code, &Message{
 		Errcode: code,
@@ -225,7 +233,7 @@ func customHTTPErrorHandler(err error, c echo.Context) {
 		case http.StatusNotFound:
 			Redirect404(c)
 		default:
-			JsonError(c, http.StatusInternalServerError, "内部错误")
+			JsonServerError(c)
 		}
 	}
 }

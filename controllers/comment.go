@@ -42,6 +42,7 @@ func GetCommentList(c echo.Context) error {
 	result, err := findSrv.GetCommentList(recordId, page, pageSize)
 	if err != nil {
 		findSrv.Logger.Errorf("GetCommentList err:%s", err.Error())
+		return JsonServerError(c)
 	}
 
 	var res interface{}
@@ -68,6 +69,7 @@ func AddComment(c echo.Context) error {
 	result, err := findSrv.GetRecord(recordId)
 	if err != nil {
 		findSrv.Logger.Errorf("get record err:%s", err.Error())
+		return JsonServerError(c)
 	}
 
 	if result == nil {
@@ -142,6 +144,7 @@ func GetAdminCommentList(c echo.Context) error {
 	result, err := findSrv.GetCommentList(recordId, page, pageSize)
 	if err != nil {
 		findSrv.Logger.Errorf("get record err:%s", err.Error())
+		return JsonServerError(c)
 	}
 
 	var res interface{}
@@ -173,6 +176,7 @@ func DeleteComment(c echo.Context) (err error) {
 	result, err := findSrv.GetComment(commentId)
 	if err != nil {
 		findSrv.Logger.Errorf("get GetComment err:%s", err.Error())
+		return JsonServerError(c)
 	}
 
 	if result == nil {
