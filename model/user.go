@@ -6,8 +6,8 @@ const (
 	REVIEWER  = 2 //志愿者
 	ADMIN     = 3 //管理员
 
-	StatusOK  = 0
-	StatusERR = 1
+	StatusOK  = 1
+	StatusERR = 2
 )
 
 type User struct {
