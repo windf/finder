@@ -99,37 +99,36 @@
         <!-- /.content -->
     </div>
     {{template "admin_footer" .}}
-{{end}}
+    <script>
+        $(function () {
+            $('form').submit(function (e) {
+                e.preventDefault();
 
-<script>
-    $(function () {
-        $('form').submit(function (e) {
-            e.preventDefault();
-
-            if ($('#nickname').val() == '') {
-                $("#nickname").focus();
-                $("#show_msg").text('请输入姓名');
-                return
-            }
-
-            if ($('#phone').val() == '') {
-                $("#phone").focus();
-                $("#show_msg").text('请输入联系方式');
-                return
-            }
-
-            $.ajax({
-                url: window.location.href,
-                type: 'put',
-                dataType: 'json',
-                data: $('form').serialize(),
-                success: function(data) {
-                    $("#show_msg").text('修改成功');
-                },
-                error: function(XMLHttpRequest, textStatus, errorThrown) {
-                    $("#show_msg").text(XMLHttpRequest.responseJSON.errmsg);
+                if ($('#nickname').val() == '') {
+                    $("#nickname").focus();
+                    $("#show_msg").text('请输入姓名');
+                    return
                 }
+
+                if ($('#phone').val() == '') {
+                    $("#phone").focus();
+                    $("#show_msg").text('请输入联系方式');
+                    return
+                }
+
+                $.ajax({
+                    url: window.location.href,
+                    type: 'put',
+                    dataType: 'json',
+                    data: $('form').serialize(),
+                    success: function(data) {
+                        $("#show_msg").text('修改成功');
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        $("#show_msg").text(XMLHttpRequest.responseJSON.errmsg);
+                    }
+                });
             });
         });
-    });
-</script>
+    </script>
+{{end}}
