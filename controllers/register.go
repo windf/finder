@@ -43,6 +43,7 @@ func Register(c echo.Context) error {
 		Phone:      phone,
 		Email:      email,
 		Role:       model.USER,
+		Status:     model.StatusOK,
 		CreateTime: time.Now().Unix(),
 		UpdateTime: time.Now().Unix(),
 	}
