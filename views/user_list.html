@@ -79,7 +79,7 @@
                         type: 'delete',
                         dataType: 'json',
                         success: function(data) {
-                            window.location = '/admin/userList?page=' + page + '&pageSize=' + {{.pageSize}};
+                            window.location = '/admin/userList?page=' + {{.page}} + '&pageSize=' + {{.pageSize}};
                         },
                         error: function(XMLHttpRequest, textStatus, errorThrown) {
                             alert(XMLHttpRequest.responseJSON.errmsg);
