@@ -41,11 +41,15 @@ func RenderUserList(c echo.Context) error {
 		findSrv.Logger.Errorf("get user list err:%s", err.Error())
 	}
 
-	var res interface{}
-	res = struct{}{}
+	res := map[string]interface{}{
+		"userId": GetSessionId(c),
+		"name":   GetSessionName(c),
+		"role":   GetUserRole(c),
+		"title":  "管理后台-用户列表",
+	}
 
 	if result != nil {
-		res = result
+		res["data"] = result
 	}
 
 	return c.Render(http.StatusOK, "user_list", res)
