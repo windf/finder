@@ -55,6 +55,10 @@ func RenderAddUser(c echo.Context) error {
 	return c.Render(http.StatusOK, "add_user", nil)
 }
 
+func RenderPassword(c echo.Context) error {
+	return c.Render(http.StatusOK, "password", nil)
+}
+
 func RenderUser(c echo.Context) error {
 	id := c.Param("id")
 	userId, err := strconv.ParseInt(id, 10, 64)
