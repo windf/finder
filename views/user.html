@@ -43,7 +43,7 @@
                                     <label for="remark">备注</label>
                                     <textarea class="form-control" rows="3" id="remark" name="remark" {{if eq .isSelf 0}}disabled{{end}}>{{.data.Remark}}</textarea>
                                 </div>
-                                {{if eq .data.Role 3}}
+                                {{if eq .role 3}}
                                 <div class="form-group">
                                     <label>用户状态</label>
                                     <div class="radio">
