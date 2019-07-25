@@ -105,17 +105,6 @@
     $(function () {
         $('form').submit(function (e) {
             e.preventDefault();
-            if ($('#user_name').val() == '') {
-                $("#user_name").focus();
-                $("#show_msg").text('请输入用户名');
-                return
-            }
-
-            if ($('#email').val() == '') {
-                $("#email").focus();
-                $("#show_msg").text('请输入邮箱');
-                return
-            }
 
             if ($('#nickname').val() == '') {
                 $("#nickname").focus();
@@ -128,7 +117,7 @@
                 $("#show_msg").text('请输入联系方式');
                 return
             }
-            console.log(window.location.href);
+
             $.ajax({
                 url: window.location.href,
                 type: 'put',

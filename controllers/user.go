@@ -215,6 +215,15 @@ func UpdateUser(c echo.Context) error {
 		UpdateTime: time.Now().Unix(),
 	}
 
+	if role == model.ADMIN {
+		status := c.FormValue("status")
+		tmpRole := c.FormValue("role")
+		tmpS, _ := strconv.Atoi(status)
+		tmpR, _ := strconv.Atoi(tmpRole)
+		user.Status = tmpS
+		user.Role = tmpR
+	}
+
 	if !findSrv.UpdateUser(userId, user) {
 		return JsonBadRequest(c, "修改用户失败，请稍后重试")
 	}
