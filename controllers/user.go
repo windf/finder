@@ -273,6 +273,10 @@ func DeleteUser(c echo.Context) error {
 		return JsonBadRequest(c, "权限不足")
 	}
 
+	if userId == GetSessionId(c) {
+		return JsonBadRequest(c, "不能删除自己")
+	}
+
 	if !findSrv.DeleteUser(&model.User{ID: userId}) {
 		return JsonBadRequest(c, "删除用户失败，请稍后重试")
 	}
