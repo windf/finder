@@ -160,6 +160,10 @@ func AddUser(c echo.Context) error {
 		return JsonBadRequest(c, "用户名已经存在")
 	}
 
+	if findSrv.CheckEmail(email) {
+		return JsonBadRequest(c, "邮箱已经存在")
+	}
+
 	tmpS, _ := strconv.Atoi(status)
 	tmpR, _ := strconv.Atoi(tmpRole)
 

@@ -53,6 +53,19 @@ func (d *Dao) GetUserInfoByName(userName string) (result *model.User, err error)
 	return
 }
 
+func (d *Dao) GetUserInfoByEmail(email string) (result *model.User, err error) {
+	result = new(model.User)
+	err = d.dbr.Table(_userTable).Where("email=?", email).Select("*").Take(&result).Error
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			result = nil
+			err = nil
+		}
+		return
+	}
+	return
+}
+
 func (d *Dao) GetUserInfoByNameAndPassword(userName, password string) (result *model.User, err error) {
 	result = new(model.User)
 	err = d.dbr.Table(_userTable).Where("username=? AND password=?", userName, password).Select("*").Take(&result).Error

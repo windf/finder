@@ -47,6 +47,19 @@ func (s *Service) CheckUser(userName string) bool {
 	return false
 }
 
+func (s *Service) CheckEmail(email string) bool {
+	result, err := s.dao.GetUserInfoByEmail(email)
+	if err != nil {
+		return false
+	}
+
+	if result != nil {
+		return true
+	}
+
+	return false
+}
+
 func (s *Service) AddUser(user *model.User) bool {
 	if s.dao.AddUser(user) {
 		return true

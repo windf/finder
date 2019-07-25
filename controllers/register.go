@@ -36,6 +36,10 @@ func Register(c echo.Context) error {
 		return JsonBadRequest(c, "用户名已经存在")
 	}
 
+	if findSrv.CheckEmail(email) {
+		return JsonBadRequest(c, "邮箱已经存在")
+	}
+
 	user := &model.User{
 		UserName:   userName,
 		Password:   util.Md5(password),
