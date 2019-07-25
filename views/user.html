@@ -1,3 +1,102 @@
-{{define "user"}}
-    user
+{{define "admin"}}
+    {{template "admin_header" .}}
+    {{template "admin_left" .}}
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                {{.title}}
+            </h1>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="row">
+                <!-- left column -->
+                <div class="col-md-6">
+                    <!-- general form elements -->
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title">Quick Example</h3>
+                        </div>
+                        <!-- /.box-header -->
+                        <!-- form start -->
+                        <form action="/user" method="post">
+                            <div class="box-body">
+                                <div class="form-group">
+                                    <label for="user">用户名</label>
+                                    <input type="text" class="form-control" id="user" value="{{data.UserName}}" disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">邮箱</label>
+                                    <input type="email" class="form-control" id="exampleInputEmail1" value="{{data.Email}}" disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label for="nickname">姓名</label>
+                                    <input type="text" class="form-control" id="nickname" name="nickname"  value="{{data.NickName}}" {{if eq .isSelf 0}}disabled{{end}}>
+                                </div>
+                                <div class="form-group">
+                                    <label for="phone">联系方式</label>
+                                    <input type="text" class="form-control" id="phone" name="phone"  value="{{data.Phone}}" {{if eq .isSelf 0}}disabled{{end}}>
+                                </div>
+                                <div class="form-group">
+                                    <label for="remark">备注</label>
+                                    <textarea class="form-control" rows="3" id="remark" name="remark" {{if eq .isSelf 0}}disabled{{end}}>{{data.Remark}}</textarea>
+                                </div>
+                                {{if eq data.Role 3}}
+                                <div class="form-group">
+                                    <label>用户状态</label>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="status" id="status" value="0" {{if eq data.Status 0}}checked=""{{end}} >
+                                            正常
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="status" id="status" value="1" {{if eq data.Status 1}}checked=""{{end}}>
+                                            封禁
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>用户角色</label>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="role" id="role" value="1" {{if eq data.Role 1}}checked=""{{end}} >
+                                            普通用户
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="role" id="role" value="2" {{if eq data.Role 2}}checked=""{{end}}>
+                                            志愿者
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="role" id="role" value="3" {{if eq data.Role 3}}checked=""{{end}}>
+                                            管理员
+                                        </label>
+                                    </div>
+                                </div>
+                                {{end}}
+                            </div>
+                            <!-- /.box-body -->
+
+                            <div class="box-footer">
+                                <input type="hidden" id="id" value="{{.userId}}">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- /.box -->
+                    <!--/.col (right) -->
+                </div>
+                <!-- /.row -->
+            </div>
+        </section>
+        <!-- /.content -->
+    </div>
+    {{template "admin_footer" .}}
 {{end}}

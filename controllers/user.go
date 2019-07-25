@@ -61,7 +61,7 @@ func RenderUserList(c echo.Context) error {
 		"title":     "用户列表",
 		"leftMenu":  "user",
 		"menu":      "user_list",
-		"data":      struct{}{},
+		"data":      nil,
 		"totalPage": totalPage,
 		"pageSize":  pageSize,
 		"page":      page,
@@ -107,11 +107,27 @@ func RenderUser(c echo.Context) error {
 		return JsonServerError(c)
 	}
 
-	var res interface{}
-	res = struct{}{}
+	res := map[string]interface{}{
+		"userId":   GetSessionId(c),
+		"name":     GetSessionName(c),
+		"role":     GetUserRole(c),
+		"title":    "用户信息修改",
+		"leftMenu": "user",
+		"menu":     "user_list",
+		"data":     nil,
+		"isSelf":   0, //是自己可以修改信息 0否 1是
+	}
+
+	if role == model.USER {
+		res["menu"] = "user_edit"
+	}
+
+	if res["userId"] == result.ID {
+		res["isSelf"] = 1
+	}
 
 	if result != nil {
-		res = result
+		res["data"] = result
 	}
 
 	return c.Render(http.StatusOK, "user", res)

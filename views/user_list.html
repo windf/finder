@@ -40,7 +40,7 @@
                                     <td>{{.Phone}}</td>
                                     <td>{{.Email}}</td>
                                     <td>{{if eq .Status 0}}正常{{else if eq .Status 1}}封禁{{end}}</td>
-                                    <td>{{if eq .Role 1}}用户{{else if eq .Role 2}}志愿者{{else if eq .Role 3}}管理员{{end}}</td>
+                                    <td>{{if eq .Role 1}}普通用户{{else if eq .Role 2}}志愿者{{else if eq .Role 3}}管理员{{end}}</td>
                                     <td><a class="btn btn-default" href="/admin/user/{{.ID}}"><i class="fa fa-edit"></i> 修改</a> <button class="del btn btn-default" value="{{.ID}}"><i class="fa fa-trash-o"></i> 删除</button></td>
                                 </tr>
                                  {{end}}
