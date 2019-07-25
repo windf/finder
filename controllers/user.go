@@ -63,6 +63,7 @@ func RenderUserList(c echo.Context) error {
 		"menu":      "user_list",
 		"data":      struct{}{},
 		"totalPage": totalPage,
+		"pageSize":  pageSize,
 	}
 
 	if result != nil {
