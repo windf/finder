@@ -17,7 +17,7 @@
                     <!-- general form elements -->
                     <div class="box box-primary">
                         <div class="box-header with-border">
-                            <h3 class="box-title">Quick Example</h3>
+                            <h3 class="box-title" id="show_msg"></h3>
                         </div>
                         <!-- /.box-header -->
                         <!-- form start -->
@@ -100,3 +100,47 @@
     </div>
     {{template "admin_footer" .}}
 {{end}}
+
+<script>
+    $(function () {
+        $('form').submit(function (e) {
+            e.preventDefault();
+            if ($('#user_name').val() == '') {
+                $("#user_name").focus();
+                $("#show_msg").text('请输入用户名');
+                return
+            }
+
+            if ($('#email').val() == '') {
+                $("#email").focus();
+                $("#show_msg").text('请输入邮箱');
+                return
+            }
+
+            if ($('#nickname').val() == '') {
+                $("#nickname").focus();
+                $("#show_msg").text('请输入姓名');
+                return
+            }
+
+            if ($('#phone').val() == '') {
+                $("#phone").focus();
+                $("#show_msg").text('请输入联系方式');
+                return
+            }
+            console.log(window.location.href);
+            $.ajax({
+                url: window.location.href,
+                type: 'put',
+                dataType: 'json',
+                data: $('form').serialize(),
+                success: function(data) {
+                    $("#show_msg").text('修改成功');
+                },
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+                    $("#show_msg").text(XMLHttpRequest.responseJSON.errmsg);
+                }
+            });
+        });
+    });
+</script>
