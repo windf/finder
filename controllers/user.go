@@ -48,6 +48,7 @@ func RenderUserList(c echo.Context) error {
 		"title":    "用户列表",
 		"leftMenu": "user",
 		"menu":     "user_list",
+		"data":     struct{}{},
 	}
 
 	if result != nil {

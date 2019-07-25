@@ -42,46 +42,18 @@
                                     <th>角色</th>
                                     <th>操作</th>
                                 </tr>
+                                 {{range .data}}
                                 <tr>
-                                    <td>183</td>
-                                    <td>John Doe</td>
-                                    <td>11-7-2014</td>
-                                    <td><span class="label label-success">Approved</span></td>
-                                    <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                                    <td>2</td>
-                                    <td>3</td>
-                                    <td>4</td>
+                                    <td>{{.ID}}</td>
+                                    <td>{{.UserName}}</td>
+                                    <td>{{.NickName}}</td>
+                                    <td>{{.Phone}}</td>
+                                    <td>{{.Email}}</td>
+                                    <td>{{if eq .Status 0}}正常{{else if eq .Status 1}}封禁{{end}}</td>
+                                    <td>{{if eq .Role 1}}}用户{{else if eq .Status 2}}志愿者{{else if eq .Status 3}}管理员{{end}}</td>
+                                    <td><a class="btn btn-app"><i class="fa fa-edit"></i> 修改</a> <a class="btn btn-app"><i class="fa fa-trash-o"></i> 删除</a></td>
                                 </tr>
-                                <tr>
-                                    <td>219</td>
-                                    <td>Alexander Pierce</td>
-                                    <td>11-7-2014</td>
-                                    <td><span class="label label-warning">Pending</span></td>
-                                    <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                                    <td>2</td>
-                                    <td>3</td>
-                                    <td>4</td>
-                                </tr>
-                                <tr>
-                                    <td>657</td>
-                                    <td>Bob Doe</td>
-                                    <td>11-7-2014</td>
-                                    <td><span class="label label-primary">Approved</span></td>
-                                    <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                                    <td>2</td>
-                                    <td>3</td>
-                                    <td>4</td>
-                                </tr>
-                                <tr>
-                                    <td>175</td>
-                                    <td>Mike Doe</td>
-                                    <td>11-7-2014</td>
-                                    <td><span class="label label-danger">Denied</span></td>
-                                    <td>Bacon ipsum dolor sit amet salami venison chicken flank fatback doner.</td>
-                                    <td>2</td>
-                                    <td>3</td>
-                                    <td>4</td>
-                                </tr>
+                                 {{end}}
                             </table>
                         </div>
                         <!-- /.box-body -->
