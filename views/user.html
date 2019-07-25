@@ -21,40 +21,41 @@
                         </div>
                         <!-- /.box-header -->
                         <!-- form start -->
+                        {{range .data}}
                         <form action="/user" method="post">
                             <div class="box-body">
                                 <div class="form-group">
                                     <label for="user">用户名</label>
-                                    <input type="text" class="form-control" id="user" value="{{data.UserName}}" disabled>
+                                    <input type="text" class="form-control" id="user" value="{{.UserName}}" disabled>
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputEmail1">邮箱</label>
-                                    <input type="email" class="form-control" id="exampleInputEmail1" value="{{data.Email}}" disabled>
+                                    <input type="email" class="form-control" id="exampleInputEmail1" value="{{.Email}}" disabled>
                                 </div>
                                 <div class="form-group">
                                     <label for="nickname">姓名</label>
-                                    <input type="text" class="form-control" id="nickname" name="nickname"  value="{{data.NickName}}" {{if eq .isSelf 0}}disabled{{end}}>
+                                    <input type="text" class="form-control" id="nickname" name="nickname"  value="{{.NickName}}" {{if eq .isSelf 0}}disabled{{end}}>
                                 </div>
                                 <div class="form-group">
                                     <label for="phone">联系方式</label>
-                                    <input type="text" class="form-control" id="phone" name="phone"  value="{{data.Phone}}" {{if eq .isSelf 0}}disabled{{end}}>
+                                    <input type="text" class="form-control" id="phone" name="phone"  value="{{.Phone}}" {{if eq .isSelf 0}}disabled{{end}}>
                                 </div>
                                 <div class="form-group">
                                     <label for="remark">备注</label>
-                                    <textarea class="form-control" rows="3" id="remark" name="remark" {{if eq .isSelf 0}}disabled{{end}}>{{data.Remark}}</textarea>
+                                    <textarea class="form-control" rows="3" id="remark" name="remark" {{if eq .isSelf 0}}disabled{{end}}>{{.Remark}}</textarea>
                                 </div>
-                                {{if eq data.Role 3}}
+                                {{if eq .Role 3}}
                                 <div class="form-group">
                                     <label>用户状态</label>
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="status" id="status" value="0" {{if eq data.Status 0}}checked=""{{end}} >
+                                            <input type="radio" name="status" id="status" value="0" {{if eq .Status 0}}checked=""{{end}} >
                                             正常
                                         </label>
                                     </div>
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="status" id="status" value="1" {{if eq data.Status 1}}checked=""{{end}}>
+                                            <input type="radio" name="status" id="status" value="1" {{if eq .Status 1}}checked=""{{end}}>
                                             封禁
                                         </label>
                                     </div>
@@ -63,19 +64,19 @@
                                     <label>用户角色</label>
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="role" id="role" value="1" {{if eq data.Role 1}}checked=""{{end}} >
+                                            <input type="radio" name="role" id="role" value="1" {{if eq .Role 1}}checked=""{{end}} >
                                             普通用户
                                         </label>
                                     </div>
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="role" id="role" value="2" {{if eq data.Role 2}}checked=""{{end}}>
+                                            <input type="radio" name="role" id="role" value="2" {{if eq .Role 2}}checked=""{{end}}>
                                             志愿者
                                         </label>
                                     </div>
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="role" id="role" value="3" {{if eq data.Role 3}}checked=""{{end}}>
+                                            <input type="radio" name="role" id="role" value="3" {{if eq .Role 3}}checked=""{{end}}>
                                             管理员
                                         </label>
                                     </div>
@@ -89,6 +90,7 @@
                                 <button type="submit" class="btn btn-primary">Submit</button>
                             </div>
                         </form>
+                        {{end}}
                     </div>
                     <!-- /.box -->
                     <!--/.col (right) -->
