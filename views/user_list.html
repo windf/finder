@@ -66,9 +66,10 @@
                 first:'首页',
                 prev:'上一页',
                 next:'下一页',
-                last:'尾页'
+                last:'尾页',
+                page:{{.page}}
             }).on('page', function (event, page) {
-                window.location = '/admin/userList?page=' + page + 'pageSize=' + {{.pageSize}};
+                window.location = '/admin/userList?page=' + page + '&pageSize=' + {{.pageSize}};
             });
         });
     </script>

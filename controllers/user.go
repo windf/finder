@@ -64,6 +64,7 @@ func RenderUserList(c echo.Context) error {
 		"data":      struct{}{},
 		"totalPage": totalPage,
 		"pageSize":  pageSize,
+		"page":      page,
 	}
 
 	if result != nil {
