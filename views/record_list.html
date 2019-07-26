@@ -97,7 +97,7 @@
                         type: 'delete',
                         dataType: 'json',
                         success: function(data) {
-                            window.location = '/admin/recordList?page=' + page + '&pageSize=' + {{.pageSize}} + '&isfind=' + {{.isFind}} + '&status=' + {{.status}};
+                            window.location = '/admin/recordList?page=' + {{.page}} + '&pageSize=' + {{.pageSize}} + '&isfind=' + {{.isFind}} + '&status=' + {{.status}};
                         },
                         error: function(XMLHttpRequest, textStatus, errorThrown) {
                             alert(XMLHttpRequest.responseJSON.errmsg);
