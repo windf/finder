@@ -78,6 +78,7 @@ func Init(c *config.Config, s *service.Service) {
 	admin.GET("/user/:id/password", RenderPassword)
 	admin.PUT("/user/:id/password", UpdatePassword)
 	//record
+	admin.GET("/record", RenderAddRecord)
 	admin.POST("/record", AddRecord)
 	admin.PUT("/record/:id", UpdateRecord)
 	admin.DELETE("/record/:id", DeleteRecord)

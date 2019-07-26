@@ -29,18 +29,19 @@
                     <li {{if eq .menu "password"}}class="active"{{end}}><a href="/admin/user/{{.userId}}/password"><i class="fa fa-circle-o"></i> 修改密码</a></li>
                 </ul>
             </li>
-            <li class="treeview">
+            <li class="treeview {{if eq .leftMenu "record"}}active{{end}}">
                 <a href="#">
-                    <i class="fa fa-files-o"></i>
-                    <span>Layout Options</span>
+                    <i class="fa fa-files-o"></i> <span>寻人管理</span>
                     <span class="pull-right-container">
-          <span class="label label-primary pull-right">4</span>
-        </span>
+                  <i class="fa fa-angle-left pull-right"></i>
+                </span>
                 </a>
                 <ul class="treeview-menu">
-                    <li><a href="../layout/top-nav.html"><i class="fa fa-circle-o"></i> Top Navigation</a></li>
-                    <li><a href="../layout/boxed.html"><i class="fa fa-circle-o"></i> Boxed</a></li>
-                    <li><a href="../layout/fixed.html"><i class="fa fa-circle-o"></i> Fixed</a></li>
+                    {{if or eq .role 3 eq .role 2}}
+                    <li {{if eq .menu "record_list"}}class="active"{{end}}><a href="/admin/recordList"><i class="fa fa-circle-o"></i> 寻人列表</a></li>
+                    {{end}}
+                    <li {{if eq .menu "user_record_list"}}class="active"{{end}}><a href="/admin/user/recordList"><i class="fa fa-circle-o"></i> 我的寻人</a></li>
+                    <li {{if eq .menu "add_record"}}class="active"{{end}}><a href="/admin/user"><i class="fa fa-circle-o"></i> 添加寻人</a></li>
                 </ul>
             </li>
             <li>

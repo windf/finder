@@ -74,6 +74,19 @@ func RenderRecord(c echo.Context) (err error) {
 	return c.Render(http.StatusOK, "record", res)
 }
 
+func RenderAddRecord(c echo.Context) error {
+	res := map[string]interface{}{
+		"userId":   GetSessionId(c),
+		"name":     GetSessionName(c),
+		"role":     GetUserRole(c),
+		"title":    "添加寻人",
+		"leftMenu": "record",
+		"menu":     "add_record",
+	}
+
+	return c.Render(http.StatusOK, "record", res)
+}
+
 func SearchRecordDetail(c echo.Context) (err error) {
 	keyword := c.QueryParam("keyword")
 
