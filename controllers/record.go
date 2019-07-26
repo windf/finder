@@ -4,6 +4,7 @@ import (
 	"finder/model"
 	"finder/util"
 	"github.com/labstack/echo"
+	"math"
 	"net/http"
 	"strconv"
 	"time"
@@ -326,7 +327,7 @@ func DeleteRecord(c echo.Context) (err error) {
 	return JsonOk(c, struct{}{})
 }
 
-func GetAdminRecordList(c echo.Context) error {
+func RenderAdminRecordList(c echo.Context) error {
 	role := GetUserRole(c)
 	if role <= model.USER {
 		return JsonBadRequest(c, "权限不足")
@@ -373,20 +374,41 @@ func GetAdminRecordList(c echo.Context) error {
 		status = model.AllReview
 	}
 
+	count, err := findSrv.GetRecordCount(isFind, status)
+	if err != nil {
+		findSrv.Logger.Errorf("GetRecordCount  err:%s", err.Error())
+		return JsonServerError(c)
+	}
+
+	totalPage := int(math.Ceil(float64(count) / float64(pageSize))) //page总数
+	if page > totalPage {
+		page = totalPage
+	}
+
 	result, err := findSrv.GetRecordList(page, pageSize, isFind, status)
 	if err != nil {
 		findSrv.Logger.Errorf("get record err:%s", err.Error())
 		return JsonServerError(c)
 	}
 
-	var res interface{}
-	res = struct{}{}
-
-	if result != nil {
-		res = result
+	res := map[string]interface{}{
+		"userId":    GetSessionId(c),
+		"name":      GetSessionName(c),
+		"role":      GetUserRole(c),
+		"title":     "寻人列表",
+		"leftMenu":  "record",
+		"menu":      "record_list",
+		"data":      nil,
+		"totalPage": totalPage,
+		"pageSize":  pageSize,
+		"page":      page,
 	}
 
-	return JsonOk(c, res)
+	if result != nil {
+		res["data"] = result
+	}
+
+	return c.Render(http.StatusOK, "record_list", res)
 }
 
 func GetUserRecordList(c echo.Context) error {

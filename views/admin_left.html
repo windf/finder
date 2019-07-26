@@ -37,7 +37,7 @@
                 </span>
                 </a>
                 <ul class="treeview-menu">
-                    {{if or eq .role 3 eq .role 2}}
+                    {{if (or (eq .role 3) (eq .role 2))}}
                     <li {{if eq .menu "record_list"}}class="active"{{end}}><a href="/admin/recordList"><i class="fa fa-circle-o"></i> 寻人列表</a></li>
                     {{end}}
                     <li {{if eq .menu "user_record_list"}}class="active"{{end}}><a href="/admin/user/recordList"><i class="fa fa-circle-o"></i> 我的寻人</a></li>

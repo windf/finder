@@ -99,3 +99,17 @@ func (d *Dao) DeleteRecord(record *model.Record) bool {
 	}
 	return true
 }
+
+func (d *Dao) GetRecordCount(isFind, status int) (result int64, err error) {
+	search := d.dbr.Table(_recordTable)
+	if isFind > model.AllFind && status > model.AllReview {
+		search = search.Where("isfind=? AND status=?", isFind, status)
+	} else if isFind == model.AllFind && status > model.AllReview {
+		search = search.Where("status=?", status)
+	} else if isFind > model.AllFind && status == model.AllReview {
+		search = search.Where("isfind=?", isFind)
+	}
+
+	err = search.Count(&result).Error
+	return
+}
