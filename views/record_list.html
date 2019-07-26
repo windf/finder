@@ -17,7 +17,24 @@
                 <div class="col-xs-12">
                     <div class="box">
                         <div class="box-header">
+                            <div class="form-inline">
+                                <div class="form-group col-lg-12">
+                                    <form>
+                                        <select class="form-control" name="isfind">
+                                            <option value="0" {{if eq .isFind 0}}selected{{end}}>全部</option>
+                                            <option value="1" {{if eq .isFind 1}}selected{{end}}>未找到</option>
+                                            <option value="2" {{if eq .isFind 2}}selected{{end}}>已找到</option>
+                                        </select>
+                                        <select class="form-control" name="status">
+                                            <option value="0" {{if eq .status 0}}selected{{end}}>全部</option>
+                                            <option value="1" {{if eq .status 1}}selected{{end}}>未审核</option>
+                                            <option value="2" {{if eq .status 2}}selected{{end}}>未通过</option>
+                                            <option value="3" {{if eq .status 3}}selected{{end}}>通过</option>
+                                        </select>
 
+                                        <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                                    </form>
+                                </div>
                         </div>
                         <!-- /.box-header -->
                         <div class="box-body table-responsive no-padding">
