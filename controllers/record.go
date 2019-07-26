@@ -147,10 +147,12 @@ func AddRecord(c echo.Context) (err error) {
 		return JsonBadRequest(c, "权限不足")
 	}
 
-	//todo  上传图片
 	name := c.FormValue("name")
 	sex := c.FormValue("sex")
-	photo := c.FormValue("photo")
+	photo, err := c.FormFile("photo")
+	if err != nil {
+		return JsonBadRequest(c, "图片上传失败")
+	}
 	address := c.FormValue("address")
 	date := c.FormValue("date")
 	remark := c.FormValue("remark")
@@ -173,11 +175,16 @@ func AddRecord(c echo.Context) (err error) {
 
 	tmpSex, _ := strconv.Atoi(sex)
 
+	imgPath, err := util.UploadFile(photo)
+	if err != nil {
+		return JsonBadRequest(c, "图片上传失败")
+	}
+
 	record := &model.Record{
 		PublisherId: GetSessionId(c),
 		Name:        name,
 		Sex:         tmpSex,
-		Photo:       photo,
+		Photo:       imgPath,
 		Address:     address,
 		Date:        date,
 		Remark:      remark,

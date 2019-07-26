@@ -4,6 +4,8 @@ import (
 	"crypto/md5"
 	"encoding/hex"
 	"io"
+	"mime/multipart"
+	"os"
 	"strconv"
 )
 
@@ -17,4 +19,29 @@ func Md5(str string) string {
 	io.WriteString(h, str)
 
 	return hex.EncodeToString(h.Sum(nil))
+}
+
+func UploadFile(file *multipart.FileHeader) (path string, err error) {
+	src, err := file.Open()
+	if err != nil {
+		return
+	}
+	defer src.Close()
+
+	imgPath := "/static/img"
+
+	path = imgPath + file.Filename
+
+	// Destination
+	dst, err := os.Create(path)
+	if err != nil {
+		return
+	}
+	defer dst.Close()
+
+	// Copy
+	if _, err = io.Copy(dst, src); err != nil {
+		return
+	}
+	return
 }
