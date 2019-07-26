@@ -127,11 +127,8 @@ func RenderUser(c echo.Context) error {
 		"isSelf":   0, //是自己可以修改信息 0否 1是
 	}
 
-	if role == model.USER {
-		res["menu"] = "user_edit"
-	}
-
 	if res["userId"] == result.ID {
+		res["menu"] = "user_edit"
 		res["isSelf"] = 1
 	}
 

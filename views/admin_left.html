@@ -4,21 +4,10 @@
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
         <!-- Sidebar user panel -->
-        {{if eq .role 1}}}
-        <div class="user-panel">
-            <a href="#">欢迎你，{{.name}} 普通用户</a>
-        </div>
 
-        {{else if eq .role 2}}}
         <div class="user-panel">
-            <a href="#">欢迎你，{{.name}} 志愿者</a>
+            <a href="#">欢迎你，{{.name}}</a>
         </div>
-
-        {{else if eq .role 3}}}
-        <div class="user-panel">
-            <a href="#">欢迎你，{{.name}} 管理员</a>
-        </div>
-        {{end}}
         <!-- search form -->
 
         <!-- /.search form -->
@@ -34,7 +23,7 @@
                 <ul class="treeview-menu">
                     <li {{if eq .menu "user_list"}}class="active"{{end}}><a href="/admin/userList"><i class="fa fa-circle-o"></i> 用户列表</a></li>
                     <li {{if eq .menu "add_user"}}class="active"{{end}}><a href="/admin/user"><i class="fa fa-circle-o"></i> 添加用户</a></li>
-                    <li><a href="/admin/user/{{.userId}}"><i class="fa fa-circle-o"></i> 我的信息</a></li>
+                    <li {{if eq .menu "user_edit"}}class="active"{{end}} ><a href="/admin/user/{{.userId}}"><i class="fa fa-circle-o"></i> 我的信息</a></li>
                     <li><a href="/user/{{.userId}}/password"><i class="fa fa-circle-o"></i> 修改密码</a></li>
                 </ul>
             </li>
