@@ -20,6 +20,7 @@ type Record struct {
 	Address     string `json:"address" gorm:"column:address"`
 	Date        string `json:"date" gorm:"column:date"`
 	Remark      string `json:"remark" gorm:"column:remark"`
+	IsFind      int    `json:"isfind" gorm:"column:isfind"`
 	Status      int    `json:"status" gorm:"column:status"`
 	CreateTime  int64  `json:"create_time" gorm:"column:create_time"`
 	UpdateTime  int64  `json:"update_time" gorm:"column:update_time"`

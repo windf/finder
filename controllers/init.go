@@ -80,6 +80,7 @@ func Init(c *config.Config, s *service.Service) {
 	//record
 	admin.GET("/record", RenderAddRecord)
 	admin.POST("/record", AddRecord)
+	admin.GET("/record/:id", RenderAdminRecord)
 	admin.PUT("/record/:id", UpdateRecord)
 	admin.DELETE("/record/:id", DeleteRecord)
 	admin.PUT("/record/:id/review", ReviewRecord)

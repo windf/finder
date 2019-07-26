@@ -88,6 +88,19 @@ func RenderAddRecord(c echo.Context) error {
 	return c.Render(http.StatusOK, "record", res)
 }
 
+func RenderAdminRecord(c echo.Context) error {
+	res := map[string]interface{}{
+		"userId":   GetSessionId(c),
+		"name":     GetSessionName(c),
+		"role":     GetUserRole(c),
+		"title":    "修改寻人信息",
+		"leftMenu": "record",
+		"menu":     "admin_record",
+	}
+
+	return c.Render(http.StatusOK, "admin_record", res)
+}
+
 func SearchRecordDetail(c echo.Context) (err error) {
 	keyword := c.QueryParam("keyword")
 
@@ -402,6 +415,8 @@ func RenderAdminRecordList(c echo.Context) error {
 		"totalPage": totalPage,
 		"pageSize":  pageSize,
 		"page":      page,
+		"isFind":    isFind,
+		"status":    status,
 	}
 
 	if result != nil {
