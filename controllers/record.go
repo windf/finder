@@ -181,6 +181,8 @@ func AddRecord(c echo.Context) (err error) {
 		Address:     address,
 		Date:        date,
 		Remark:      remark,
+		IsFind:      model.NotFind,
+		Status:      model.UnReview,
 		CreateTime:  time.Now().Unix(),
 		UpdateTime:  time.Now().Unix(),
 	}
