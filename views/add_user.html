@@ -1,3 +1,153 @@
 {{define "add_user"}}
-    add_user
+    {{template "admin_header" .}}
+    {{template "admin_left" .}}
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                {{.title}}
+            </h1>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="row">
+                <!-- left column -->
+                <div class="col-md-6">
+                    <!-- general form elements -->
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title" id="show_msg"></h3>
+                        </div>
+                        <!-- /.box-header -->
+                        <!-- form start -->
+                        <form action="/user" method="post">
+                            <div class="box-body">
+                                <div class="form-group">
+                                    <label for="user_name">用户名</label>
+                                    <input type="text" class="form-control" id="user_name" name="user_name" >
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputEmail1">邮箱</label>
+                                    <input type="email" class="form-control" id="exampleInputEmail1" name="email">
+                                </div>
+                                <div class="form-group">
+                                    <label for="nickname">姓名</label>
+                                    <input type="text" class="form-control" id="nickname" name="nickname">
+                                </div>
+                                <div class="form-group">
+                                    <label for="phone">联系方式</label>
+                                    <input type="text" class="form-control" id="phone" name="phone">
+                                </div>
+                                <div class="form-group">
+                                    <label for="password">密码</label>
+                                    <input type="text" class="form-control" id="password" name="password">
+                                </div>
+                                <div class="form-group">
+                                    <label for="remark">备注</label>
+                                    <textarea class="form-control" rows="3" id="remark" name="remark"></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label>用户状态</label>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="status" id="status" value="1" checked>
+                                            正常
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="status" id="status" value="2">
+                                            封禁
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>用户角色</label>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="role" id="role" value="1" checked >
+                                            普通用户
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="role" id="role" value="2">
+                                            志愿者
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="role" id="role" value="3">
+                                            管理员
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.box-body -->
+
+                            <div class="box-footer">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- /.box -->
+                    <!--/.col (right) -->
+                </div>
+                <!-- /.row -->
+            </div>
+        </section>
+        <!-- /.content -->
+    </div>
+    {{template "admin_footer" .}}
+    <script>
+        $(function () {
+            $('form').submit(function (e) {
+                e.preventDefault();
+
+                if ($('#user_name').val() == '') {
+                    $("#user_name").focus();
+                    $("#show_msg").text('请输入用户名');
+                    return
+                }
+
+                if ($('#email').val() == '') {
+                    $("#email").focus();
+                    $("#show_msg").text('请输入邮箱');
+                    return
+                }
+
+                if ($('#nickname').val() == '') {
+                    $("#nickname").focus();
+                    $("#show_msg").text('请输入姓名');
+                    return
+                }
+
+                if ($('#phone').val() == '') {
+                    $("#phone").focus();
+                    $("#show_msg").text('请输入联系方式');
+                    return
+                }
+
+                if ($('#password').val() == '') {
+                    $("#password").focus();
+                    $("#show_msg").text('请输入密码');
+                    return
+                }
+
+                $.ajax({
+                    url: e.currentTarget.action,
+                    type: 'post',
+                    dataType: 'json',
+                    data: $('form').serialize(),
+                    success: function(data) {
+                        $("#show_msg").text('添加成功');
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        $("#show_msg").text(XMLHttpRequest.responseJSON.errmsg);
+                    }
+                });
+            });
+        });
+    </script>
 {{end}}

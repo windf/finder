@@ -75,7 +75,16 @@ func RenderUserList(c echo.Context) error {
 }
 
 func RenderAddUser(c echo.Context) error {
-	return c.Render(http.StatusOK, "add_user", nil)
+	res := map[string]interface{}{
+		"userId":   GetSessionId(c),
+		"name":     GetSessionName(c),
+		"role":     GetUserRole(c),
+		"title":    "添加用户",
+		"leftMenu": "add_user",
+		"menu":     "user_list",
+	}
+
+	return c.Render(http.StatusOK, "add_user", res)
 }
 
 func RenderPassword(c echo.Context) error {
