@@ -340,22 +340,22 @@ func RenderAdminRecordList(c echo.Context) error {
 
 	page, err := strconv.Atoi(reqPage)
 	if err != nil {
-		return JsonBadRequest(c, "参数错误")
+		page = 1
 	}
 
 	pageSize, err := strconv.Atoi(reqPageSize)
 	if err != nil {
-		return JsonBadRequest(c, "参数错误")
+		pageSize = 10
 	}
 
 	isFind, err := strconv.Atoi(reqIsFind)
 	if err != nil {
-		return JsonBadRequest(c, "参数错误")
+		isFind = model.AllFind
 	}
 
 	status, err := strconv.Atoi(reqStatus)
 	if err != nil {
-		return JsonBadRequest(c, "参数错误")
+		status = model.AllReview
 	}
 
 	if page < 1 {
