@@ -85,7 +85,7 @@ func RenderAddRecord(c echo.Context) error {
 		"menu":     "add_record",
 	}
 
-	return c.Render(http.StatusOK, "record", res)
+	return c.Render(http.StatusOK, "add_record", res)
 }
 
 func RenderAdminRecord(c echo.Context) error {
