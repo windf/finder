@@ -88,7 +88,16 @@ func RenderAddUser(c echo.Context) error {
 }
 
 func RenderPassword(c echo.Context) error {
-	return c.Render(http.StatusOK, "password", nil)
+	res := map[string]interface{}{
+		"userId":   GetSessionId(c),
+		"name":     GetSessionName(c),
+		"role":     GetUserRole(c),
+		"title":    "修改密码",
+		"leftMenu": "user",
+		"menu":     "password",
+	}
+
+	return c.Render(http.StatusOK, "password", res)
 }
 
 func RenderUser(c echo.Context) error {
