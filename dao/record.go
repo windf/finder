@@ -33,7 +33,7 @@ func (d *Dao) GetRecordList(page, pageSize, isFind, status int) (result []*model
 		search = search.Where("isfind=?", isFind)
 	}
 
-	err = search.Select("*").Find(&result).Offset(offset).Limit(pageSize).Order("id DESC").Error
+	err = search.Select("*").Offset(offset).Limit(pageSize).Order("id DESC").Find(&result).Error
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
 			result = nil
