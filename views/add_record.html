@@ -109,6 +109,14 @@
                     return
                 }
 
+                $('#photo').change(function () {
+                    var fileExtension = ['jpeg', 'jpg', 'png', 'gif', 'bmp'];
+                    if ($.inArray($(this).val().split('.').pop().toLowerCase(), fileExtension) == -1) {
+                        $("#show_msg").text('照片格式只支持：' +fileExtension.join(', ') );
+                        return
+                    }
+                });
+
                 $.ajax({
                     url: e.currentTarget.action,
                     type: 'post',
