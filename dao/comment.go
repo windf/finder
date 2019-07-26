@@ -16,7 +16,7 @@ func (d *Dao) GetCommentList(recordId int64, page, pageSize int) (result []*mode
 	}
 
 	offset := (page - 1) * pageSize
-	err = search.Offset(offset).Limit(pageSize).Select("*").Find(&result).Order("id DESC").Error
+	err = search.Offset(offset).Limit(pageSize).Select("*").Order("id DESC").Find(&result).Error
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
 			result = nil

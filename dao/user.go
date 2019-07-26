@@ -11,7 +11,7 @@ const (
 
 func (d *Dao) GetUserList(page, pageSize int) (result []*model.User, err error) {
 	offset := (page - 1) * pageSize
-	err = d.dbr.Table(_userTable).Offset(offset).Limit(pageSize).Select("*").Find(&result).Order("id DESC").Error
+	err = d.dbr.Table(_userTable).Offset(offset).Limit(pageSize).Select("*").Order("id DESC").Find(&result).Error
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
 			result = nil

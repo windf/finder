@@ -53,7 +53,7 @@ func (d *Dao) GetUserRecordList(userId int64, page, pageSize, isFind int) (resul
 		search = search.Where("userId=?", userId)
 	}
 
-	err = search.Select("*").Find(&result).Offset(offset).Limit(pageSize).Order("id DESC").Error
+	err = search.Select("*").Offset(offset).Limit(pageSize).Order("id DESC").Find(&result).Error
 	if err != nil {
 		if err == gorm.ErrRecordNotFound {
 			result = nil
