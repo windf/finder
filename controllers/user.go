@@ -276,17 +276,17 @@ func UpdatePassword(c echo.Context) error {
 		return JsonBadRequest(c, "请输入原密码")
 	}
 
-	result, _ := findSrv.GetUser(userId)
-	if result.Password != util.Md5(password) {
-		return JsonBadRequest(c, "原密码不正确")
-	}
-
 	if newPassword == "" {
 		return JsonBadRequest(c, "请输入新密码")
 	}
 
 	if newPassword != rePassword {
 		return JsonBadRequest(c, "新密码和确认密码不一致")
+	}
+
+	result, _ := findSrv.GetUser(userId)
+	if result.Password != util.Md5(password) {
+		return JsonBadRequest(c, "原密码不正确")
 	}
 
 	user := &model.User{

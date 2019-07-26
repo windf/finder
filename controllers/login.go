@@ -27,7 +27,7 @@ func Login(c echo.Context) error {
 		return JsonBadRequest(c, "该用户已被封禁，请尝试联系管理员")
 	}
 
-	err = SetSessionId(c, result.ID, result.NickName)
+	err = SetSessionId(c, result.ID, result.UserName)
 	if err != nil {
 		return JsonBadRequest(c, "登录失败，请稍后重试")
 	}
