@@ -80,8 +80,8 @@ func RenderAddUser(c echo.Context) error {
 		"name":     GetSessionName(c),
 		"role":     GetUserRole(c),
 		"title":    "添加用户",
-		"leftMenu": "add_user",
-		"menu":     "user_list",
+		"leftMenu": "user",
+		"menu":     "add_user",
 	}
 
 	return c.Render(http.StatusOK, "add_user", res)
