@@ -114,11 +114,11 @@ func RenderAdminRecord(c echo.Context) error {
 		return JsonBadRequest(c, "id不正确")
 	}
 
-	if role == model.USER {
-		if result.PublisherId != GetSessionId(c) {
-			return JsonBadRequest(c, "权限不足")
-		}
+	//if role == model.USER {
+	if result.PublisherId != GetSessionId(c) {
+		return JsonBadRequest(c, "权限不足")
 	}
+	//}
 
 	res := map[string]interface{}{
 		"userId":   GetSessionId(c),
@@ -306,11 +306,11 @@ func UpdateRecord(c echo.Context) (err error) {
 		return JsonBadRequest(c, "id不正确")
 	}
 
-	if role == model.USER {
-		if result.PublisherId != GetSessionId(c) {
-			return JsonBadRequest(c, "权限不足")
-		}
+	//if role == model.USER {
+	if result.PublisherId != GetSessionId(c) {
+		return JsonBadRequest(c, "权限不足")
 	}
+	//}
 
 	isFind := c.FormValue("isfind")
 
