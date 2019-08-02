@@ -28,12 +28,17 @@ func UploadFile(file *multipart.FileHeader) (path string, err error) {
 	}
 	defer src.Close()
 
+	dir, err := os.Getwd()
+	if err != nil {
+		return
+	}
+
 	imgPath := "/static/img"
 
 	path = imgPath + file.Filename
 
 	// Destination
-	dst, err := os.Create(path)
+	dst, err := os.Create(dir + path)
 	if err != nil {
 		return
 	}
