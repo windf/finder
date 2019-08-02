@@ -6,6 +6,7 @@ import (
 	"io"
 	"mime/multipart"
 	"os"
+	"path/filepath"
 	"strconv"
 )
 
@@ -35,7 +36,9 @@ func UploadFile(file *multipart.FileHeader) (path string, err error) {
 
 	imgPath := "/static/img/"
 
-	path = imgPath + file.Filename
+	ext := filepath.Ext(file.Filename)
+
+	path = imgPath + Md5(file.Filename) + ext
 
 	// Destination
 	dst, err := os.Create(dir + path)
