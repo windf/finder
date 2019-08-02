@@ -89,13 +89,49 @@ func RenderAddRecord(c echo.Context) error {
 }
 
 func RenderAdminRecord(c echo.Context) error {
+	id := c.Param("id")
+	recordId, err := strconv.ParseInt(id, 10, 64)
+	if err != nil {
+		return JsonBadRequest(c, "参数错误")
+	}
+
+	if recordId <= 0 {
+		return JsonBadRequest(c, "id不正确")
+	}
+
+	role := GetUserRole(c)
+	if role == model.UserError {
+		return JsonBadRequest(c, "权限不足")
+	}
+
+	result, err := findSrv.GetRecord(recordId)
+	if err != nil {
+		findSrv.Logger.Errorf("get record err:%s", err.Error())
+		return JsonServerError(c)
+	}
+
+	if result == nil {
+		return JsonBadRequest(c, "id不正确")
+	}
+
+	if role == model.USER {
+		if result.PublisherId != GetSessionId(c) {
+			return JsonBadRequest(c, "权限不足")
+		}
+	}
+
 	res := map[string]interface{}{
 		"userId":   GetSessionId(c),
 		"name":     GetSessionName(c),
 		"role":     GetUserRole(c),
-		"title":    "修改寻人信息",
+		"title":    "修改寻人状态",
 		"leftMenu": "record",
-		"menu":     "admin_record",
+		"menu":     "user_record_list",
+		"data":     nil,
+	}
+
+	if result != nil {
+		res["data"] = result
 	}
 
 	return c.Render(http.StatusOK, "admin_record", res)
@@ -233,38 +269,16 @@ func UpdateRecord(c echo.Context) (err error) {
 		}
 	}
 
-	name := c.FormValue("name")
-	sex := c.FormValue("sex")
-	photo := c.FormValue("photo")
-	address := c.FormValue("address")
-	date := c.FormValue("date")
-	remark := c.FormValue("remark")
+	isFind := c.FormValue("isfind")
 
-	if name == "" {
-		return JsonBadRequest(c, "请输入姓名")
+	if isFind == "" {
+		return JsonBadRequest(c, "请选择发现状态")
 	}
 
-	if sex == "" {
-		return JsonBadRequest(c, "请输入性别")
-	}
-
-	if address == "" {
-		return JsonBadRequest(c, "请输入地址")
-	}
-
-	if date == "" {
-		return JsonBadRequest(c, "请输入日期")
-	}
-
-	tmpSex, _ := strconv.Atoi(sex)
+	tmpIsFind, _ := strconv.Atoi(isFind)
 
 	record := &model.Record{
-		Name:       name,
-		Sex:        tmpSex,
-		Photo:      photo,
-		Address:    address,
-		Date:       date,
-		Remark:     remark,
+		IsFind:     tmpIsFind,
 		UpdateTime: time.Now().Unix(),
 	}
 

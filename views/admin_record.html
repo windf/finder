@@ -1,0 +1,114 @@
+{{define "add_record"}}
+    {{template "admin_header" .}}
+    {{template "admin_left" .}}
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                {{.title}}
+            </h1>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="row">
+                <!-- left column -->
+                <div class="col-md-6">
+                    <!-- general form elements -->
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <h3 class="box-title" id="show_msg"></h3>
+                        </div>
+                        <!-- /.box-header -->
+                        <!-- form start -->
+                        <form>
+                            <div class="box-body">
+                                <div class="form-group">
+                                    <label for="name">失踪者姓名</label>
+                                    <input type="text" class="form-control" id="name" name="name" value="{{.data.Name}}" disabled >
+                                </div>
+                                <div class="form-group">
+                                    <label>性别</label>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="sex" id="sex" value="1" {{if eq .data.Sex 1}}checked=""{{end}} disabled>
+                                            男
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="sex" id="sex" value="2" {{if eq .data.Sex 2}}checked=""{{end}} disabled>
+                                            女
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label for="address">失踪地点</label>
+                                    <input type="text" class="form-control" id="address" name="address" value="{{.data.Address}}" disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label for="date">失踪日期</label>
+                                    <input type="date" class="form-control" id="date" name="date" value="{{.data.Date}}" disabled>
+                                </div>
+                                <div class="form-group">
+                                    <label for="exampleInputFile">照片</label>
+                                    <img src="{{.data.Photo}}"  class="img-thumbnail">
+                                </div>
+                                <div class="form-group">
+                                    <label for="remark">备注</label>
+                                    <textarea class="form-control" rows="3" id="remark" name="remark" disabled></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <label>是否已经找到</label>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="isfind" id="isfind" value="1" {{if eq .data.IsFind 1}}checked=""{{end}}>
+                                            否
+                                        </label>
+                                    </div>
+                                    <div class="radio">
+                                        <label>
+                                            <input type="radio" name="isfind" id="isfind" value="2" {{if eq .data.IsFind 2}}checked=""{{end}}>
+                                            是
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- /.box-body -->
+
+                            <div class="box-footer">
+                                <button type="submit" class="btn btn-primary">提交</button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- /.box -->
+                    <!--/.col (right) -->
+                </div>
+                <!-- /.row -->
+            </div>
+        </section>
+        <!-- /.content -->
+    </div>
+    {{template "admin_footer" .}}
+    <script>
+        $(function () {
+            $('form').submit(function (e) {
+                e.preventDefault();
+
+
+                $.ajax({
+                    url: window.location.href,
+                    type: 'put',
+                    dataType: 'json',
+                    data: $('form').serialize(),
+                    success: function(data) {
+                        $("#show_msg").text('修改成功');
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        $("#show_msg").text(XMLHttpRequest.responseJSON.errmsg);
+                    }
+                });
+            });
+        });
+    </script>
+{{end}}
