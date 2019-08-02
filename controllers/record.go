@@ -137,6 +137,49 @@ func RenderAdminRecord(c echo.Context) error {
 	return c.Render(http.StatusOK, "admin_record", res)
 }
 
+func RenderReviewRecord(c echo.Context) error {
+	id := c.Param("id")
+	recordId, err := strconv.ParseInt(id, 10, 64)
+	if err != nil {
+		return JsonBadRequest(c, "参数错误")
+	}
+
+	if recordId <= 0 {
+		return JsonBadRequest(c, "id不正确")
+	}
+
+	role := GetUserRole(c)
+	if role <= model.USER {
+		return JsonBadRequest(c, "权限不足")
+	}
+
+	result, err := findSrv.GetRecord(recordId)
+	if err != nil {
+		findSrv.Logger.Errorf("get record err:%s", err.Error())
+		return JsonServerError(c)
+	}
+
+	if result == nil {
+		return JsonBadRequest(c, "id不正确")
+	}
+
+	res := map[string]interface{}{
+		"userId":   GetSessionId(c),
+		"name":     GetSessionName(c),
+		"role":     GetUserRole(c),
+		"title":    "审核寻人信息",
+		"leftMenu": "record",
+		"menu":     "record_list",
+		"data":     nil,
+	}
+
+	if result != nil {
+		res["data"] = result
+	}
+
+	return c.Render(http.StatusOK, "review_record", res)
+}
+
 func SearchRecordDetail(c echo.Context) (err error) {
 	keyword := c.QueryParam("keyword")
 
