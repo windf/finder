@@ -33,7 +33,7 @@ func UploadFile(file *multipart.FileHeader) (path string, err error) {
 		return
 	}
 
-	imgPath := "/static/img"
+	imgPath := "/static/img/"
 
 	path = imgPath + file.Filename
 
