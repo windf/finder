@@ -53,6 +53,8 @@ func (d *Dao) GetUserRecordList(userId int64, page, pageSize, isFind, status int
 		search = search.Where("status=? AND publisher_id=?", status, userId)
 	} else if isFind > model.AllFind && status == model.AllReview {
 		search = search.Where("isfind=? AND publisher_id=?", isFind, userId)
+	} else {
+		search = search.Where("publisher_id=?", userId)
 	}
 
 	err = search.Select("*").Offset(offset).Limit(pageSize).Order("id DESC").Find(&result).Error
@@ -124,6 +126,8 @@ func (d *Dao) GetUserRecordCount(userId int64, isFind, status int) (result int64
 		search = search.Where("status=? AND publisher_id=?", status, userId)
 	} else if isFind > model.AllFind && status == model.AllReview {
 		search = search.Where("isfind=? AND publisher_id=?", isFind, userId)
+	} else {
+		search = search.Where("publisher_id=?", userId)
 	}
 
 	err = search.Count(&result).Error
