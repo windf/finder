@@ -57,7 +57,7 @@
                                         <td>{{if eq .Sex 1}}男{{else if eq .Sex 2}}女{{end}}</td>
                                         <td>{{.Address}}</td>
                                         <td>{{.Date}}</td>
-                                        <td>{{if eq .IsFind 1}}未找到{{else if eq .Status 2}}已找到{{end}}</td>
+                                        <td>{{if eq .IsFind 1}}未找到{{else if eq .IsFind 2}}已找到{{end}}</td>
                                         <td>{{if eq .Status 1}}未审核{{else if eq .Status 2}}未通过{{else if eq .Status 3}}通过{{end}}</td>
                                         <td><a class="btn btn-default" href="/admin/record/{{.ID}}"><i class="fa fa-edit"></i> 审核</a> <button class="del btn btn-default" value="{{.ID}}"><i class="fa fa-trash-o"></i> 删除</button></td>
                                     </tr>

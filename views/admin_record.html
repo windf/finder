@@ -52,7 +52,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="exampleInputFile">照片</label>
-                                    <img src="{{.data.Photo}}"  class="img-thumbnail">
+                                    {{if ne .data.Photo ""}}<img src="{{.data.Photo}}"  class="img-thumbnail"> {{end}}
                                 </div>
                                 <div class="form-group">
                                     <label for="remark">备注</label>
