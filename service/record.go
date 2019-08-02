@@ -45,10 +45,19 @@ func (s *Service) GetRecordCount(isFind, status int) (result int64, err error) {
 	return
 }
 
-func (s *Service) GetUserRecordList(userId int64, page, pageSize, isFind int) (result []*model.Record, err error) {
-	result, err = s.dao.GetUserRecordList(userId, page, pageSize, isFind)
+func (s *Service) GetUserRecordCount(userId int64, isFind, status int) (result int64, err error) {
+	result, err = s.dao.GetUserRecordCount(userId, isFind, status)
 	if err != nil {
-		s.Logger.Errorf("GetRecordList err:%s ", err.Error())
+		s.Logger.Errorf("GetUserRecordCount err:%s ", err.Error())
+		return
+	}
+	return
+}
+
+func (s *Service) GetUserRecordList(userId int64, page, pageSize, isFind, status int) (result []*model.Record, err error) {
+	result, err = s.dao.GetUserRecordList(userId, page, pageSize, isFind, status)
+	if err != nil {
+		s.Logger.Errorf("GetUserRecordList err:%s ", err.Error())
 		return
 	}
 	return

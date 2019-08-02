@@ -439,20 +439,26 @@ func GetUserRecordList(c echo.Context) error {
 	reqPage := c.QueryParam("page")
 	reqPageSize := c.QueryParam("pageSize")
 	reqIsFind := c.QueryParam("isfind")
+	reqStatus := c.QueryParam("status")
 
 	page, err := strconv.Atoi(reqPage)
 	if err != nil {
-		return JsonBadRequest(c, "参数错误")
+		page = 1
 	}
 
 	pageSize, err := strconv.Atoi(reqPageSize)
 	if err != nil {
-		return JsonBadRequest(c, "参数错误")
+		pageSize = 10
 	}
 
 	isFind, err := strconv.Atoi(reqIsFind)
 	if err != nil {
-		return JsonBadRequest(c, "参数错误")
+		isFind = model.AllFind
+	}
+
+	status, err := strconv.Atoi(reqStatus)
+	if err != nil {
+		status = model.AllReview
 	}
 
 	if page < 1 {
@@ -467,18 +473,45 @@ func GetUserRecordList(c echo.Context) error {
 		isFind = model.AllFind
 	}
 
-	result, err := findSrv.GetUserRecordList(GetSessionId(c), page, pageSize, isFind)
+	if status < model.AllReview || status > model.ReviewSuccess {
+		status = model.AllReview
+	}
+
+	count, err := findSrv.GetUserRecordCount(GetSessionId(c), isFind, status)
+	if err != nil {
+		findSrv.Logger.Errorf("GetUserRecordCount  err:%s", err.Error())
+		return JsonServerError(c)
+	}
+
+	totalPage := int(math.Ceil(float64(count) / float64(pageSize))) //page总数
+	if page > totalPage {
+		page = totalPage
+	}
+
+	result, err := findSrv.GetUserRecordList(GetSessionId(c), page, pageSize, isFind, status)
 	if err != nil {
 		findSrv.Logger.Errorf("get record err:%s", err.Error())
 		return JsonServerError(c)
 	}
 
-	var res interface{}
-	res = struct{}{}
-
-	if result != nil {
-		res = result
+	res := map[string]interface{}{
+		"userId":    GetSessionId(c),
+		"name":      GetSessionName(c),
+		"role":      GetUserRole(c),
+		"title":     "我的寻人",
+		"leftMenu":  "record",
+		"menu":      "user_record_list",
+		"data":      nil,
+		"totalPage": totalPage,
+		"pageSize":  pageSize,
+		"page":      page,
+		"isFind":    isFind,
+		"status":    status,
 	}
 
-	return JsonOk(c, res)
+	if result != nil {
+		res["data"] = result
+	}
+
+	return c.Render(http.StatusOK, "user_record_list", res)
 }

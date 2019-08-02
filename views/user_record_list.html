@@ -1,0 +1,117 @@
+{{define "user_record_list"}}
+    {{template "admin_header" .}}
+    {{template "admin_left" .}}
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                {{.title}}
+            </h1>
+
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="box">
+                        <div class="box-header">
+                            <div class="form-inline">
+                                <div class="form-group col-lg-12">
+                                    <form>
+                                        <select class="form-control" name="isfind" id="isfind">
+                                            <option value="0" {{if eq .isFind 0}}selected{{end}}>全部</option>
+                                            <option value="1" {{if eq .isFind 1}}selected{{end}}>未找到</option>
+                                            <option value="2" {{if eq .isFind 2}}selected{{end}}>已找到</option>
+                                        </select>
+                                        <select class="form-control" name="status" id="status">
+                                            <option value="0" {{if eq .status 0}}selected{{end}}>全部</option>
+                                            <option value="1" {{if eq .status 1}}selected{{end}}>未审核</option>
+                                            <option value="2" {{if eq .status 2}}selected{{end}}>未通过</option>
+                                            <option value="3" {{if eq .status 3}}selected{{end}}>通过</option>
+                                        </select>
+
+                                        <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.box-header -->
+                        <div class="box-body table-responsive no-padding">
+                            <table class="table table-hover">
+                                <tr>
+                                    <th>ID</th>
+                                    <th>姓名</th>
+                                    <th>性别</th>
+                                    <th>失踪地点</th>
+                                    <th>失踪日期</th>
+                                    <th>是否被找到</th>
+                                    <th>审核状态</th>
+                                    <th>操作</th>
+                                </tr>
+                                {{range .data}}
+                                    <tr>
+                                        <td>{{.ID}}</td>
+                                        <td>{{.Name}}</td>
+                                        <td>{{if eq .Sex 1}}男{{else if eq .Sex 2}}女{{end}}</td>
+                                        <td>{{.Address}}</td>
+                                        <td>{{.Date}}</td>
+                                        <td>{{if eq .IsFind 1}}未找到{{else if eq .Status 2}}已找到{{end}}</td>
+                                        <td>{{if eq .Status 1}}未审核{{else if eq .Status 2}}未通过{{else if eq .Status 3}}通过{{end}}</td>
+                                        <td><a class="btn btn-default" href="/admin/record/{{.ID}}"><i class="fa fa-edit"></i> 修改</a> <button class="del btn btn-default" value="{{.ID}}"><i class="fa fa-trash-o"></i> 删除</button></td>
+                                    </tr>
+                                {{end}}
+                            </table>
+                        </div>
+                        <!-- /.box-body -->
+                        <div class="box-footer clearfix">
+                            <ul class="pagination pagination-sm no-margin pull-right" id="pagination"></ul>
+                        </div>
+                    </div>
+                    <!-- /.box -->
+                </div>
+            </div>
+        </section>
+        <!-- /.content -->
+    </div>
+    {{template "admin_footer" .}}
+    <script type="text/javascript">
+        $(function () {
+            window.pagObj = $('#pagination').twbsPagination({
+                totalPages: {{.totalPage}},
+                visiblePages: 10,
+                first:'首页',
+                prev:'上一页',
+                next:'下一页',
+                last:'尾页',
+                startPage:{{.page}}
+            }).on('page', function (event, page) {
+                window.location = '/admin//user/recordList?page=' + page + '&pageSize=' + {{.pageSize}} + '&isfind=' + {{.isFind}} + '&status=' + {{.status}};
+            });
+            $('.del').click(function () {
+                var id = $(this).val();
+                if (confirm('确认删除？')) {
+                    $.ajax({
+                        url: '/admin/record/' + id,
+                        type: 'delete',
+                        dataType: 'json',
+                        success: function(data) {
+                            window.location = '/admin//user/recordList?page=' + {{.page}} + '&pageSize=' + {{.pageSize}} + '&isfind=' + {{.isFind}} + '&status=' + {{.status}};
+                        },
+                        error: function(XMLHttpRequest, textStatus, errorThrown) {
+                            alert(XMLHttpRequest.responseJSON.errmsg);
+                        }
+                    });
+                } else {
+                    return false;
+                }
+            });
+
+            $('form').submit(function (e) {
+                e.preventDefault();
+                window.location = '/admin//user/recordList?isfind=' + $("#isfind").val() + '&status=' + $("#status").val();
+            });
+        });
+    </script>
+{{end}}

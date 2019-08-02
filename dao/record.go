@@ -44,13 +44,15 @@ func (d *Dao) GetRecordList(page, pageSize, isFind, status int) (result []*model
 	return
 }
 
-func (d *Dao) GetUserRecordList(userId int64, page, pageSize, isFind int) (result []*model.Record, err error) {
+func (d *Dao) GetUserRecordList(userId int64, page, pageSize, isFind, status int) (result []*model.Record, err error) {
 	offset := (page - 1) * pageSize
 	search := d.dbr.Table(_recordTable)
-	if isFind > model.AllFind {
-		search = search.Where("userId=? AND isfind=?", userId, isFind)
-	} else {
-		search = search.Where("userId=?", userId)
+	if isFind > model.AllFind && status > model.AllReview {
+		search = search.Where("isfind=? AND status=? AND publisher_id=?", isFind, status, userId)
+	} else if isFind == model.AllFind && status > model.AllReview {
+		search = search.Where("status=? AND publisher_id=?", status, userId)
+	} else if isFind > model.AllFind && status == model.AllReview {
+		search = search.Where("isfind=? AND publisher_id=?", isFind, userId)
 	}
 
 	err = search.Select("*").Offset(offset).Limit(pageSize).Order("id DESC").Find(&result).Error
@@ -108,6 +110,20 @@ func (d *Dao) GetRecordCount(isFind, status int) (result int64, err error) {
 		search = search.Where("status=?", status)
 	} else if isFind > model.AllFind && status == model.AllReview {
 		search = search.Where("isfind=?", isFind)
+	}
+
+	err = search.Count(&result).Error
+	return
+}
+
+func (d *Dao) GetUserRecordCount(userId int64, isFind, status int) (result int64, err error) {
+	search := d.dbr.Table(_recordTable)
+	if isFind > model.AllFind && status > model.AllReview {
+		search = search.Where("isfind=? AND status=? AND publisher_id=?", isFind, status, userId)
+	} else if isFind == model.AllFind && status > model.AllReview {
+		search = search.Where("status=? AND publisher_id=?", status, userId)
+	} else if isFind > model.AllFind && status == model.AllReview {
+		search = search.Where("isfind=? AND publisher_id=?", isFind, userId)
 	}
 
 	err = search.Count(&result).Error
