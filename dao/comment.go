@@ -55,3 +55,12 @@ func (d *Dao) DeleteComment(comment *model.Comment) bool {
 	}
 	return true
 }
+
+func (d *Dao) GetCommentCount(recordId int64) (result int64, err error) {
+	search := d.dbr.Table(_commentTable)
+	if recordId > 0 {
+		search = search.Where("record_id=?", recordId)
+	}
+	err = search.Count(&result).Error
+	return
+}

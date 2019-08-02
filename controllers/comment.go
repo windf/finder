@@ -3,6 +3,8 @@ package controllers
 import (
 	"finder/model"
 	"github.com/labstack/echo"
+	"math"
+	"net/http"
 	"strconv"
 	"time"
 )
@@ -37,6 +39,17 @@ func GetCommentList(c echo.Context) error {
 
 	if pageSize <= 0 || pageSize > 200 {
 		pageSize = 10
+	}
+
+	count, err := findSrv.GetCommentCount(recordId)
+	if err != nil {
+		findSrv.Logger.Errorf("GetCommentCount  err:%s", err.Error())
+		return JsonServerError(c)
+	}
+
+	totalPage := int(math.Ceil(float64(count) / float64(pageSize))) //page总数
+	if page > totalPage {
+		page = totalPage
 	}
 
 	result, err := findSrv.GetCommentList(recordId, page, pageSize)
@@ -112,7 +125,7 @@ func GetAdminCommentList(c echo.Context) error {
 
 	reqPage := c.QueryParam("page")
 	reqPageSize := c.QueryParam("pageSize")
-	reqId := c.QueryParam("id")
+	reqId := c.QueryParam("record_id")
 
 	page, err := strconv.Atoi(reqPage)
 	if err != nil {
@@ -126,7 +139,7 @@ func GetAdminCommentList(c echo.Context) error {
 
 	recordId, err := strconv.ParseInt(reqId, 10, 64)
 	if err != nil {
-		return JsonBadRequest(c, "参数错误")
+		recordId = 0
 	}
 
 	if page < 1 {
@@ -141,20 +154,42 @@ func GetAdminCommentList(c echo.Context) error {
 		recordId = 0
 	}
 
-	result, err := findSrv.GetCommentList(recordId, page, pageSize)
+	count, err := findSrv.GetCommentCount(recordId)
 	if err != nil {
-		findSrv.Logger.Errorf("get record err:%s", err.Error())
+		findSrv.Logger.Errorf("GetCommentCount  err:%s", err.Error())
 		return JsonServerError(c)
 	}
 
-	var res interface{}
-	res = struct{}{}
-
-	if result != nil {
-		res = result
+	totalPage := int(math.Ceil(float64(count) / float64(pageSize))) //page总数
+	if page > totalPage {
+		page = totalPage
 	}
 
-	return JsonOk(c, res)
+	result, err := findSrv.GetCommentList(recordId, page, pageSize)
+	if err != nil {
+		findSrv.Logger.Errorf("get GetCommentList err:%s", err.Error())
+		return JsonServerError(c)
+	}
+
+	res := map[string]interface{}{
+		"userId":    GetSessionId(c),
+		"name":      GetSessionName(c),
+		"role":      GetUserRole(c),
+		"title":     "评论列表",
+		"leftMenu":  "comment",
+		"menu":      "comment_list",
+		"data":      nil,
+		"totalPage": totalPage,
+		"pageSize":  pageSize,
+		"page":      page,
+		"recordId":  reqId,
+	}
+
+	if result != nil {
+		res["data"] = result
+	}
+
+	return c.Render(http.StatusOK, "comment_list", res)
 }
 
 func DeleteComment(c echo.Context) (err error) {

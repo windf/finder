@@ -90,6 +90,7 @@ func Init(c *config.Config, s *service.Service) {
 	//comment
 	admin.GET("/commentList", GetAdminCommentList)
 	admin.DELETE("/comment/:id", DeleteComment)
+
 	s.Echo.Logger.Fatal(s.Echo.Start(c.HttpAddress))
 }
 

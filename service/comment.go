@@ -11,6 +11,15 @@ func (s *Service) GetCommentList(recordId int64, page, pageSize int) (result []*
 	return
 }
 
+func (s *Service) GetCommentCount(recordId int64) (result int64, err error) {
+	result, err = s.dao.GetCommentCount(recordId)
+	if err != nil {
+		s.Logger.Errorf("GetCommentCount err:%s ", err.Error())
+		return
+	}
+	return
+}
+
 func (s *Service) GetComment(id int64) (result *model.Comment, err error) {
 	result, err = s.dao.GetCommentCache(id)
 	if err == nil {
