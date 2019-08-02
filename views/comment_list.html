@@ -45,7 +45,7 @@
                                         <td>{{.RecordId}}</td>
                                         <td>{{.Phone}}</td>
                                         <td>{{.Remark}}</td>
-                                        <td>{{if ne .data.Photo ""}}<img src="{{.data.Photo}}"  class="img-thumbnail"> {{end}}</td>
+                                        <td>{{if ne .Photo ""}}<img src="{{.Photo}}"  class="img-thumbnail"> {{end}}</td>
                                         <td>{{.CreateTime}}</td>
                                         <td><button class="del btn btn-default" value="{{.ID}}"><i class="fa fa-trash-o"></i> 删除</button></td>
                                     </tr>
