@@ -119,12 +119,14 @@
                     return
                 }
 
-                var fileExtension = ['jpeg', 'jpg', 'png', 'gif', 'bmp'];
-                if ($.inArray($('#photo').val().split('.').pop().toLowerCase(), fileExtension) == -1) {
-                    $("#show_msg").text('照片格式只支持：' +fileExtension.join(', ') );
-                    return
+                if ($('#photo').val() != '') {
+                    var fileExtension = ['jpeg', 'jpg', 'png', 'gif', 'bmp'];
+                    if ($.inArray($('#photo').val().split('.').pop().toLowerCase(), fileExtension) == -1) {
+                        $("#show_msg").text('照片格式只支持：' +fileExtension.join(', ') );
+                        return
+                    }
                 }
-
+                
                 var fd = new FormData($(this)[0]);
 
                 $.ajax({
