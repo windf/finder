@@ -34,9 +34,12 @@
 
                 <!-- Comments Form -->
                 <div class="card my-4">
-                    <h5 class="card-header">Leave a Comment:</h5>
+                    <h5 class="card-header">提供线索:</h5>
                     <div class="card-body">
-                        <form>
+                        <form action="/record/{{.data.ID}}/comment" method="post" enctype="multipart/form-data">
+                            <div class="form-group has-error">
+                                <span class="help-block" id="show_msg"></span>
+                            </div>
                             <div class="form-group">
                                 <label for="phone">*联系方式</label>
                                 <input type="text" class="form-control col-lg-4" id="phone" name="phone" >
@@ -46,6 +49,13 @@
                             </div>
                             <div class="form-group">
                                 <textarea class="form-control" rows="3"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <img src="">
+                            </div>
+                            <div class="form-group">
+                                <label for="code">*验证码</label>
+                                <input type="text" class="form-control col-lg-4" id="code" name="code" >
                             </div>
                             <button type="submit" class="btn btn-primary">提交</button>
                         </form>
@@ -94,4 +104,45 @@
 
     </div>
     {{template "footer" .}}
+    <script>
+        $(function () {
+            $('form').submit(function (e) {
+                e.preventDefault();
+                if ($('#phone').val() == '') {
+                    $("#phone").focus();
+                    $("#show_msg").text('请输入联系方式');
+                    return
+                }
+                if ($('#code').val() == '') {
+                    $("#code").focus();
+                    $("#show_msg").text('请输入验证码');
+                    return
+                }
+
+                var fileExtension = ['jpeg', 'jpg', 'png', 'gif', 'bmp'];
+                if ($.inArray($('#photo').val().split('.').pop().toLowerCase(), fileExtension) == -1) {
+                    $("#show_msg").text('照片格式只支持：' +fileExtension.join(', ') );
+                    return
+                }
+
+                var fd = new FormData($(this)[0]);
+
+                $.ajax({
+                    url: e.currentTarget.action,
+                    type: 'post',
+                    dataType: 'json',
+                    data: fd,
+                    cache: false,
+                    contentType: false,
+                    processData: false,
+                    success: function(data) {
+                        $("#show_msg").text('添加成功');
+                    },
+                    error: function(XMLHttpRequest, textStatus, errorThrown) {
+                        $("#show_msg").text(XMLHttpRequest.responseJSON.errmsg);
+                    }
+                });
+            });
+        });
+    </script>
 {{end}}

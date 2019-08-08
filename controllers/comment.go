@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"finder/model"
+	"finder/util"
 	"github.com/labstack/echo"
 	"math"
 	"net/http"
@@ -92,7 +93,10 @@ func AddComment(c echo.Context) error {
 	//无需注册提供线索
 	phone := c.FormValue("phone")
 	remark := c.FormValue("remark")
-	photo := c.FormValue("photo")
+	photo, err := c.FormFile("photo")
+	if err != nil {
+		return JsonBadRequest(c, "图片上传失败")
+	}
 
 	if phone == "" {
 		return JsonBadRequest(c, "请输入联系方式")
@@ -102,10 +106,15 @@ func AddComment(c echo.Context) error {
 		return JsonBadRequest(c, "请输入线索描述")
 	}
 
+	imgPath, err := util.UploadFile(photo)
+	if err != nil {
+		return JsonBadRequest(c, "图片上传失败")
+	}
+
 	comment := &model.Comment{
 		RecordId:   recordId,
 		Phone:      phone,
-		Photo:      photo,
+		Photo:      imgPath,
 		Remark:     remark,
 		CreateTime: time.Now().Unix(),
 	}
