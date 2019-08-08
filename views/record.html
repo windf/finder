@@ -21,14 +21,15 @@
             <div class="col-lg-12">
 
                 <!-- Preview Image -->
-                <div class="text-center">
-                    {{if ne .data.Photo ""}}<img src="{{.data.Photo}}"  class="rounded"> {{end}}
-                    <p>性别：{{if eq .data.Sex 1}}男{{else if eq .data.Sex 2}}女{{end}}</p>
-                    <p>失踪地点：{{.data.Address}}</p>
-                    <p>失踪日期：{{.data.Date}}</p>
-                    <p>状态：{{if eq .data.IsFind 1}}未找到{{else if eq .data.IsFind 2}}已找到{{end}}</p>
-                    <p>{{.data.Remark}}</p>
-                </div>
+
+                {{if ne .data.Photo ""}}<img src="{{.data.Photo}}"  class="rounded"> {{end}}
+                <p>性别：{{if eq .data.Sex 1}}男{{else if eq .data.Sex 2}}女{{end}}</p>
+                <p>失踪地点：{{.data.Address}}</p>
+                <p>失踪日期：{{.data.Date}}</p>
+                <p>状态：{{if eq .data.IsFind 1}}未找到{{else if eq .data.IsFind 2}}已找到{{end}}</p>
+                <hr>
+                <p>{{.data.Remark}}</p>
+
                 <hr>
 
                 <!-- Comments Form -->
