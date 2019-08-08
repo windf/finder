@@ -58,12 +58,15 @@ func RenderRecord(c echo.Context) (err error) {
 		return JsonServerError(c)
 	}
 
-	var res interface{}
-	res = struct{}{}
+	res := map[string]interface{}{
+		"title": "寻人信息",
+		"data":  nil,
+	}
 
 	if result != nil {
-		res = result
+		res["data"] = result
 	}
+
 	return c.Render(http.StatusOK, "record", res)
 }
 
