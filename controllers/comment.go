@@ -94,7 +94,7 @@ func AddComment(c echo.Context) error {
 	phone := c.FormValue("phone")
 	remark := c.FormValue("remark")
 	photo, err := c.FormFile("photo")
-	if err != nil {
+	if photo != nil && err != nil {
 		return JsonBadRequest(c, "图片上传失败")
 	}
 
@@ -106,9 +106,12 @@ func AddComment(c echo.Context) error {
 		return JsonBadRequest(c, "请输入线索描述")
 	}
 
-	imgPath, err := util.UploadFile(photo)
-	if err != nil {
-		return JsonBadRequest(c, "图片上传失败")
+	var imgPath string
+	if photo != nil {
+		imgPath, err = util.UploadFile(photo)
+		if err != nil {
+			return JsonBadRequest(c, "图片上传失败")
+		}
 	}
 
 	comment := &model.Comment{
