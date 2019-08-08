@@ -58,13 +58,23 @@ func RenderRecord(c echo.Context) (err error) {
 		return JsonServerError(c)
 	}
 
+	comment, err := findSrv.GetAllCommentList(recordId)
+	if err != nil {
+		findSrv.Logger.Errorf("get comment err:%s", err.Error())
+		return JsonServerError(c)
+	}
 	res := map[string]interface{}{
-		"title": "寻人信息",
-		"data":  nil,
+		"title":   "寻人信息",
+		"data":    nil,
+		"comment": nil,
 	}
 
 	if result != nil {
 		res["data"] = result
+	}
+
+	if comment != nil {
+		res["comment"] = comment
 	}
 
 	return c.Render(http.StatusOK, "record", res)

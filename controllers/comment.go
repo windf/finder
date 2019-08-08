@@ -198,6 +198,10 @@ func GetAdminCommentList(c echo.Context) error {
 	}
 
 	if result != nil {
+		for k, v := range result {
+			t := time.Unix(v.CreateTime, 0)
+			result[k].ShowTime = t.Format("2006-01-02 15:04:05")
+		}
 		res["data"] = result
 	}
 

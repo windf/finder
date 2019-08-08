@@ -27,6 +27,18 @@ func (d *Dao) GetCommentList(recordId int64, page, pageSize int) (result []*mode
 	return
 }
 
+func (d *Dao) GetAllCommentList(recordId int64) (result []*model.Comment, err error) {
+	err = d.dbr.Table(_commentTable).Where("record_id=?", recordId).Select("*").Order("id DESC").Find(&result).Error
+	if err != nil {
+		if err == gorm.ErrRecordNotFound {
+			result = nil
+			err = nil
+		}
+		return
+	}
+	return
+}
+
 func (d *Dao) GetCommentById(id int64) (result *model.Comment, err error) {
 	result = new(model.Comment)
 	err = d.dbr.Table(_commentTable).Where("id=?", id).Select("*").Take(result).Error
