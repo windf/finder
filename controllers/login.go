@@ -43,3 +43,7 @@ func Logout(c echo.Context) error {
 
 	return RedirectLogin(c)
 }
+
+func RenderAbout(c echo.Context) error {
+	return c.Render(http.StatusOK, "about", nil)
+}

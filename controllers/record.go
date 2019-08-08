@@ -32,21 +32,13 @@ func RenderRecordList(c echo.Context) error {
 		pageSize = 10
 	}
 
-	result, err := findSrv.GetRecordList(page, pageSize, model.AllFind, model.ReviewSuccess)
+	result, err := findSrv.GetRecordList(page, pageSize, model.NotFind, model.ReviewSuccess)
 	if err != nil {
 		findSrv.Logger.Errorf("get record err:%s", err.Error())
 		return JsonServerError(c)
 	}
 
-	var res interface{}
-	res = struct{}{}
-
-	if result != nil {
-		res = result
-	}
-
-	return c.Render(http.StatusOK, "record_list", res)
-	//return JsonOk(c, res)
+	return JsonOk(c, result)
 }
 
 func RenderRecord(c echo.Context) (err error) {

@@ -52,6 +52,7 @@ func Init(c *config.Config, s *service.Service) {
 
 	// Routes
 	s.Echo.GET("/", RenderIndex)
+	s.Echo.GET("/about", RenderAbout)
 	s.Echo.GET("/login", RenderLogin)
 	s.Echo.POST("/login", Login)
 	s.Echo.GET("/logout", Logout)
@@ -62,7 +63,7 @@ func Init(c *config.Config, s *service.Service) {
 	s.Echo.POST("/comment/:id", AddComment)
 	s.Echo.GET("/search", SearchRecordDetail)
 	s.Echo.GET("/record/:id", RenderRecord)
-	s.Echo.GET("/recordList", RenderRecordList)
+	s.Echo.GET("/data", RenderRecordList)
 	s.Echo.GET("/404", Render404)
 
 	admin := s.Echo.Group("/admin", MiddlewareAuthAdmin)
