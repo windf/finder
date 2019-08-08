@@ -3,11 +3,13 @@ package util
 import (
 	"crypto/md5"
 	"encoding/hex"
+	"fmt"
 	"io"
 	"mime/multipart"
 	"os"
 	"path/filepath"
 	"strconv"
+	"time"
 )
 
 func IsNumeric(s string) (int64, bool) {
@@ -38,7 +40,7 @@ func UploadFile(file *multipart.FileHeader) (path string, err error) {
 
 	ext := filepath.Ext(file.Filename)
 
-	path = imgPath + Md5(file.Filename) + ext
+	path = imgPath + Md5(file.Filename+fmt.Sprintf("%d", time.Now().Unix())) + ext
 
 	// Destination
 	dst, err := os.Create(dir + path)
