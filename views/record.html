@@ -48,7 +48,8 @@
                                 <input type="file" id="photo" name="photo">
                             </div>
                             <div class="form-group">
-                                <textarea class="form-control" rows="3"></textarea>
+                                <label for="remark">*线索描述</label>
+                                <textarea class="form-control" rows="3" id="remark" name="remark"></textarea>
                             </div>
                             <div class="form-group">
                                 <img src="">
@@ -119,6 +120,12 @@
                     return
                 }
 
+                if ($('#remark').val() == '') {
+                    $("#remark").focus();
+                    $("#show_msg").text('请输入线索描述');
+                    return
+                }
+
                 if ($('#photo').val() != '') {
                     var fileExtension = ['jpeg', 'jpg', 'png', 'gif', 'bmp'];
                     if ($.inArray($('#photo').val().split('.').pop().toLowerCase(), fileExtension) == -1) {
@@ -126,7 +133,7 @@
                         return
                     }
                 }
-                
+
                 var fd = new FormData($(this)[0]);
 
                 $.ajax({
