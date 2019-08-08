@@ -52,7 +52,7 @@ func Init(c *config.Config, s *service.Service) {
 
 	// Routes
 	s.Echo.GET("/", RenderIndex)
-	s.Echo.GET("/about", RenderAbout)
+	//s.Echo.GET("/about", RenderAbout)
 	s.Echo.GET("/login", RenderLogin)
 	s.Echo.POST("/login", Login)
 	s.Echo.GET("/logout", Logout)
