@@ -68,9 +68,9 @@
                 <div class="media mb-4">
                     <img class="d-flex mr-3 rounded-circle" src="/static/img/user.png" width="50" height="50" alt="">
                     <div class="media-body">
-                        <h5 class="mt-0">用户_{{.ID}}</h5>
+                        <h5 class="mt-0">用户_{{.ID}} {{.ShowTime}}}</h5>
                         <p>{{if ne .Photo ""}}<img src="{{.Photo}}"> {{end}}</p>
-                        {{.Remark}}
+                        <p>{{.Remark}}</p>
                     </div>
                 </div>
                 {{end}}

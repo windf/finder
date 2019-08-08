@@ -74,6 +74,10 @@ func RenderRecord(c echo.Context) (err error) {
 	}
 
 	if comment != nil {
+		for k, v := range comment {
+			t := time.Unix(v.CreateTime, 0)
+			comment[k].ShowTime = t.Format("2006-01-02 15:04:05")
+		}
 		res["comment"] = comment
 	}
 
