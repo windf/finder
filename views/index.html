@@ -84,9 +84,9 @@
                         <h4 class="card-title">
                             <a href="#">{{.Name}}</a>
                         </h4>
-                        <p class="card-text">{{if eq .Sex 1}}男{{else if eq .Sex 2}}女{{end}}</p>
-                        <p class="card-text">{{.Address}}</p>
-                        <p class="card-text">{{.Date}}</p>
+                        <p class="card-text">性别：{{if eq .Sex 1}}男{{else if eq .Sex 2}}女{{end}}</p>
+                        <p class="card-text">失踪地点：{{.Address}}</p>
+                        <p class="card-text">失踪日期：{{.Date}}</p>
                         <p class="card-text">{{.Remark}}</p>
                     </div>
                 </div>
