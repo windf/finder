@@ -31,7 +31,7 @@ func RenderIndex(c echo.Context) error {
 		pageSize = 8
 	}
 
-	count, err := findSrv.GetRecordCount(model.AllFind, model.ReviewSuccess)
+	count, err := findSrv.GetRecordCount(model.NotFind, model.ReviewSuccess)
 	if err != nil {
 		findSrv.Logger.Errorf("GetRecordCount  err:%s", err.Error())
 		return JsonServerError(c)
@@ -42,7 +42,7 @@ func RenderIndex(c echo.Context) error {
 		page = totalPage
 	}
 
-	result, err := findSrv.GetRecordList(page, pageSize, model.AllFind, model.ReviewSuccess)
+	result, err := findSrv.GetRecordList(page, pageSize, model.NotFind, model.ReviewSuccess)
 	if err != nil {
 		findSrv.Logger.Errorf("get record err:%s", err.Error())
 		return JsonServerError(c)

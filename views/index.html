@@ -4,7 +4,7 @@
     <!-- Navigation -->
     <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark fixed-top">
         <div class="container">
-            <a class="navbar-brand" href="index.html">Start Bootstrap</a>
+            <a class="navbar-brand" href="index.html">Finder</a>
             <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -62,15 +62,13 @@
     <div class="container">
 
         <!-- Page Heading/Breadcrumbs -->
-        <h1 class="mt-4 mb-3">Portfolio 4
-            <small>Subheading</small>
+        <h1 class="mt-4 mb-3">
         </h1>
 
         <ol class="breadcrumb">
-            <li class="breadcrumb-item">
-                <a href="index.html">Home</a>
+            <li class="breadcrumb-item active">
+                <a href="index.html">首页</a>
             </li>
-            <li class="breadcrumb-item active">Portfolio 4</li>
         </ol>
 
         <div class="row">
@@ -79,10 +77,10 @@
 
             <div class="col-lg-3 col-md-4 col-sm-6 portfolio-item">
                 <div class="card h-100">
-                    <a href="#"><img class="card-img-top" src="{{.Photo}}" alt=""></a>
+                    <a href="/record/{{.ID}}"><img class="card-img-top" src="{{.Photo}}" alt=""></a>
                     <div class="card-body">
                         <h4 class="card-title">
-                            <a href="#">{{.Name}}</a>
+                            <a href="/record/{{.ID}}">{{.Name}}</a>
                         </h4>
                         <p class="card-text">性别：{{if eq .Sex 1}}男{{else if eq .Sex 2}}女{{end}}</p>
                         <p class="card-text">失踪地点：{{.Address}}</p>
