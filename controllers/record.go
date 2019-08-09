@@ -64,14 +64,14 @@ func RenderRecord(c echo.Context) (err error) {
 		return JsonServerError(c)
 	}
 
-	captchaId, image := util.GenerateCaptcha()
+	captchaId, captchaImage := util.GenerateCaptcha()
 
 	res := map[string]interface{}{
-		"title":     "寻人信息",
-		"data":      nil,
-		"comment":   nil,
-		"captchaId": captchaId,
-		"image":     image,
+		"title":        "寻人信息",
+		"data":         nil,
+		"comment":      nil,
+		"captchaId":    captchaId,
+		"captchaImage": captchaImage,
 	}
 
 	if result != nil {
