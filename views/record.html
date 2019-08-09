@@ -101,24 +101,29 @@
                 e.preventDefault();
                 if ($('#phone').val() == '') {
                     $("#phone").focus();
+                    $("#alert").attr("class", "form-group alert alert-warning")
                     $("#show_msg").text('请输入联系方式');
-                    return
-                }
-                if ($('#code').val() == '') {
-                    $("#code").focus();
-                    $("#show_msg").text('请输入验证码');
                     return
                 }
 
                 if ($('#remark').val() == '') {
                     $("#remark").focus();
+                    $("#alert").attr("class", "form-group alert alert-warning")
                     $("#show_msg").text('请输入线索描述');
                     return
                 }
 
+                if ($('#code').val() == '') {
+                    $("#code").focus();
+                    $("#alert").attr("class", "form-group alert alert-warning")
+                    $("#show_msg").text('请输入验证码');
+                    return
+                }
+                
                 if ($('#photo').val() != '') {
                     var fileExtension = ['jpeg', 'jpg', 'png', 'gif', 'bmp'];
                     if ($.inArray($('#photo').val().split('.').pop().toLowerCase(), fileExtension) == -1) {
+                        $("#alert").attr("class", "form-group alert alert-warning")
                         $("#show_msg").text('照片格式只支持：' +fileExtension.join(', ') );
                         return
                     }
