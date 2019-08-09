@@ -13,7 +13,7 @@ import (
 var json = jsoniter.ConfigCompatibleWithStandardLibrary
 
 type Dao struct {
-	cpool *redis.Pool
+	Cpool *redis.Pool
 	dbr   *gorm.DB
 	dbw   *gorm.DB
 }
@@ -29,12 +29,18 @@ func NewDao(c *config.Config) (d *Dao, err error) {
 	if err != nil {
 		panic(err)
 	}
+	dbr.DB().SetMaxIdleConns(c.Database.Read.Idle)
+	dbr.DB().SetMaxOpenConns(c.Database.Read.Active)
+	dbr.DB().SetConnMaxLifetime(time.Duration(c.Database.Read.IdleTimeout) * time.Minute)
 	dao.dbr = dbr
 
 	dbw, err := gorm.Open("mysql", c.Database.Write.Addr)
 	if err != nil {
 		panic(err)
 	}
+	dbw.DB().SetMaxIdleConns(c.Database.Write.Idle)
+	dbw.DB().SetMaxOpenConns(c.Database.Write.Active)
+	dbw.DB().SetConnMaxLifetime(time.Duration(c.Database.Write.IdleTimeout) * time.Minute)
 	dao.dbw = dbw
 
 	redisCfg := RedisCfg{
@@ -42,7 +48,7 @@ func NewDao(c *config.Config) (d *Dao, err error) {
 		Psw:  c.Redis.Psw,
 	}
 	redis := NewRedisPool(&redisCfg)
-	dao.cpool = redis
+	dao.Cpool = redis
 	if strings.ToLower(c.Env) != "prod" {
 		dbw.LogMode(true)
 		dbr.LogMode(true)
@@ -75,7 +81,7 @@ func NewRedisPool(cfg *RedisCfg) *redis.Pool {
 }
 
 func (d *Dao) Close() {
-	d.cpool.Close()
+	d.Cpool.Close()
 	d.dbr.Close()
 	d.dbw.Close()
 }

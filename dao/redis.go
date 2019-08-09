@@ -6,7 +6,7 @@ import (
 )
 
 func (d *Dao) GetRecordCache(id int64) (record *model.Record, err error) {
-	c := d.cpool.Get()
+	c := d.Cpool.Get()
 	defer c.Close()
 
 	redisKey := RKRecord(id)
@@ -20,7 +20,7 @@ func (d *Dao) GetRecordCache(id int64) (record *model.Record, err error) {
 }
 
 func (d *Dao) GetCommentCache(id int64) (comment *model.Comment, err error) {
-	c := d.cpool.Get()
+	c := d.Cpool.Get()
 	defer c.Close()
 
 	redisKey := RKComment(id)

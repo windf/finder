@@ -63,10 +63,15 @@ func RenderRecord(c echo.Context) (err error) {
 		findSrv.Logger.Errorf("get comment err:%s", err.Error())
 		return JsonServerError(c)
 	}
+
+	captchaId, image := util.GenerateCaptcha()
+
 	res := map[string]interface{}{
-		"title":   "寻人信息",
-		"data":    nil,
-		"comment": nil,
+		"title":     "寻人信息",
+		"data":      nil,
+		"comment":   nil,
+		"captchaId": captchaId,
+		"image":     image,
 	}
 
 	if result != nil {

@@ -3,8 +3,10 @@ package service
 import (
 	"finder/config"
 	"finder/dao"
+	"github.com/gomodule/redigo/redis"
 	"github.com/labstack/echo"
 	"github.com/labstack/gommon/log"
+	"github.com/mojocn/base64Captcha"
 )
 
 var logLevels = map[string]log.Lvl{
@@ -24,6 +26,10 @@ type Service struct {
 	Logger echo.Logger
 }
 
+type customizeRdsStore struct {
+	redisClient *redis.Pool
+}
+
 func New(c *config.Config) (s *Service) {
 
 	var err error
@@ -38,6 +44,9 @@ func New(c *config.Config) (s *Service) {
 
 	//log
 	s.initLog()
+
+	customeStore := customizeRdsStore{s.dao.Cpool}
+	base64Captcha.SetCustomStore(&customeStore)
 	return
 }
 
@@ -48,4 +57,25 @@ func (s *Service) initLog() {
 
 func (s *Service) Close() {
 	s.dao.Close()
+}
+
+func (s *customizeRdsStore) Set(id string, value string) {
+	c := s.redisClient.Get()
+	defer c.Close()
+	c.Do("SETEX", id, 60, value)
+}
+
+func (s *customizeRdsStore) Get(id string, clear bool) (value string) {
+	c := s.redisClient.Get()
+	defer c.Close()
+
+	reply, err := redis.String(c.Do("GET", id))
+	if err == nil {
+		value = reply
+	}
+
+	if clear {
+		c.Do("DEL", id)
+	}
+	return
 }

@@ -3,7 +3,9 @@ package util
 import (
 	"crypto/md5"
 	"encoding/hex"
+	"finder/config"
 	"fmt"
+	"github.com/mojocn/base64Captcha"
 	"io"
 	"mime/multipart"
 	"os"
@@ -54,4 +56,15 @@ func UploadFile(file *multipart.FileHeader) (path string, err error) {
 		return
 	}
 	return
+}
+
+func GenerateCaptcha() (id string, value string) {
+	id, capD := base64Captcha.GenerateCaptcha("", config.Conf.CaptchaConfig)
+	//以base64编码
+	value = base64Captcha.CaptchaWriteToBase64Encoding(capD)
+	return
+}
+
+func VerifyCaptcha(id string, value string) bool {
+	return base64Captcha.VerifyCaptcha(id, value)
 }

@@ -2,17 +2,19 @@ package config
 
 import (
 	"github.com/BurntSushi/toml"
+	"github.com/mojocn/base64Captcha"
 )
 
 type Config struct {
-	Database    *Database
-	Redis       *RedisConfig
-	Env         string
-	Cache       *Cache
-	LogLevel    string
-	HttpAddress string
-	Prefix      string
-	Secret      string
+	Database      *Database
+	Redis         *RedisConfig
+	Env           string
+	Cache         *Cache
+	LogLevel      string
+	HttpAddress   string
+	Prefix        string
+	Secret        string
+	CaptchaConfig base64Captcha.ConfigDigit
 }
 
 type Database struct {
@@ -26,7 +28,10 @@ type RedisConfig struct {
 }
 
 type Databases struct {
-	Addr string
+	Addr        string
+	Active      int
+	Idle        int
+	IdleTimeout int
 }
 
 type Cache struct {
@@ -39,5 +44,12 @@ var (
 
 func Init(filePath string) (err error) {
 	_, err = toml.DecodeFile(filePath, &Conf)
+	Conf.CaptchaConfig = base64Captcha.ConfigDigit{
+		Height:     80,
+		Width:      240,
+		MaxSkew:    0.7,
+		DotCount:   80,
+		CaptchaLen: 5,
+	}
 	return
 }
