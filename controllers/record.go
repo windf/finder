@@ -4,6 +4,7 @@ import (
 	"finder/model"
 	"finder/util"
 	"github.com/labstack/echo"
+	"html/template"
 	"math"
 	"net/http"
 	"strconv"
@@ -71,7 +72,7 @@ func RenderRecord(c echo.Context) (err error) {
 		"data":         nil,
 		"comment":      nil,
 		"captchaId":    captchaId,
-		"captchaImage": captchaImage,
+		"captchaImage": template.URL(captchaImage),
 	}
 
 	if result != nil {

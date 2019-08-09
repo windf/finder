@@ -52,7 +52,7 @@
                                 <textarea class="form-control" rows="3" id="remark" name="remark"></textarea>
                             </div>
                             <div class="form-group">
-                                <img src="{{.captchaImage}}">
+                                <img src="{{.captchaImage}}" id="refresh">
                             </div>
                             <div class="form-group">
                                 <label for="code">*验证码</label>
@@ -85,6 +85,18 @@
     {{template "footer" .}}
     <script>
         $(function () {
+            $('#refresh').click(function () {
+                $.ajax({
+                    url: '/getCaptcha',
+                    type: 'get',
+                    dataType: 'json',
+                    success: function(data) {
+                        $('#captcha').val(data.id);
+                        $('#refresh').attr('src', data.image);
+                    }
+                });
+            });
+
             $('form').submit(function (e) {
                 e.preventDefault();
                 if ($('#phone').val() == '') {
@@ -127,6 +139,7 @@
                     },
                     error: function(XMLHttpRequest, textStatus, errorThrown) {
                         $("#show_msg").text(XMLHttpRequest.responseJSON.errmsg);
+                        $('#refresh').click();
                     }
                 });
             });

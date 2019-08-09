@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50718
 File Encoding         : 65001
 
-Date: 2019-07-22 16:53:33
+Date: 2019-08-09 11:43:34
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -28,11 +28,16 @@ CREATE TABLE `comment` (
   `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '发布时间',
   PRIMARY KEY (`id`),
   KEY `record_id` (`record_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='线索表';
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COMMENT='线索表';
 
 -- ----------------------------
 -- Records of comment
 -- ----------------------------
+INSERT INTO `comment` VALUES ('1', '1', '2', '3', '/static/img/ef3f8a5b7079f7ce2726e3d1676f89da.png', '2');
+INSERT INTO `comment` VALUES ('4', '7', '2323', '23', '', '1565257673');
+INSERT INTO `comment` VALUES ('5', '7', '2323', '23', '/static/img/ef3f8a5b7079f7ce2726e3d1676f89da.png', '1565257702');
+INSERT INTO `comment` VALUES ('6', '7', '2323', '23', '/static/img/5eee1c52391b7ee5c787bf403ef98e16.png', '1565258156');
+INSERT INTO `comment` VALUES ('7', '7', '2323', '23', '/static/img/c5d42b1d74fe4325b3187400d51a4dc3.png', '1565258161');
 
 -- ----------------------------
 -- Table structure for `record`
@@ -54,12 +59,17 @@ CREATE TABLE `record` (
   PRIMARY KEY (`id`),
   KEY `publisher_id` (`publisher_id`),
   KEY `status_name` (`status`,`name`),
-  KEY `isfind_status` (`isfind`,`status`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='发布记录表';
+  KEY `isfind_status` (`isfind`,`status`) USING BTREE
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COMMENT='发布记录表';
 
 -- ----------------------------
 -- Records of record
 -- ----------------------------
+INSERT INTO `record` VALUES ('4', '2', '2', '1', '', '23', '2019-07-07', 'dsf', '1', '3', '1564134513', '1564134513');
+INSERT INTO `record` VALUES ('5', '3', '2', '1', '', '2', '2019-07-05', 'sdf', '1', '3', '1564134605', '1565245906');
+INSERT INTO `record` VALUES ('6', '3', 'tt', '1', '', 'tt', '2019-08-18', 'sdf', '2', '3', '1564714594', '1565245901');
+INSERT INTO `record` VALUES ('7', '3', '2323', '1', '/static/img/ef3f8a5b7079f7ce2726e3d1676f89da.png', 'ff', '2019-08-30', 'sdf', '1', '3', '1564717331', '1565245895');
+INSERT INTO `record` VALUES ('8', '3', '123', '1', '/static/img/ef3f8a5b7079f7ce2726e3d1676f89da.png', '23', '2019-08-18', 'fdsfdsf', '2', '3', '1564725173', '1565245888');
 
 -- ----------------------------
 -- Table structure for `user`
@@ -79,8 +89,12 @@ CREATE TABLE `user` (
   `create_time` int(11) NOT NULL DEFAULT '0' COMMENT '创建时间',
   PRIMARY KEY (`id`),
   UNIQUE KEY `username` (`username`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户表';
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COMMENT='用户表';
 
 -- ----------------------------
 -- Records of user
 -- ----------------------------
+INSERT INTO `user` VALUES ('3', '123456', 'c4ca4238a0b923820dcc509a6f75849b', 'ww', '231', '123456@qq.com', '3313', '1', '3', '1564123430', '1563955300');
+INSERT INTO `user` VALUES ('7', 'test', '098f6bcd4621d373cade4e832627b4f6', 'test1', 'test2', '22@qq.com', '2', '1', '2', '1564123670', '1564048167');
+INSERT INTO `user` VALUES ('8', '12345623', 'e10adc3949ba59abbe56e057f20f883e', '123456', '123456', '1234526@qq.com', 'dd', '1', '1', '1564122077', '1564122077');
+INSERT INTO `user` VALUES ('9', 'qq', '099b3b060154898840f0ebdfb46ec78f', 'qq', 'qq', 'qq@qq.com', '', '1', '1', '1564125530', '1564125530');
