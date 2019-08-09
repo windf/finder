@@ -93,6 +93,9 @@ func AddComment(c echo.Context) error {
 	//无需注册提供线索
 	phone := c.FormValue("phone")
 	remark := c.FormValue("remark")
+	code := c.FormValue("code")
+	codeId := c.FormValue("captcha")
+
 	photo, err := c.FormFile("photo")
 	if photo != nil && err != nil {
 		return JsonBadRequest(c, "图片上传失败")
@@ -104,6 +107,18 @@ func AddComment(c echo.Context) error {
 
 	if remark == "" {
 		return JsonBadRequest(c, "请输入线索描述")
+	}
+
+	if code == "" {
+		return JsonBadRequest(c, "请输入验证码")
+	}
+
+	if codeId == "" {
+		return JsonBadRequest(c, "验证码显示错误")
+	}
+
+	if !util.VerifyCaptcha(codeId, code) {
+		return JsonBadRequest(c, "验证码错误")
 	}
 
 	var imgPath string
